@@ -65,8 +65,11 @@ function createOptionItem(text, id, isChecked) {
 function onGenerateReportButtonClick(siteURL, settings) {
   const url = new URL(`${VIEWER_ORIGIN}${VIEWER_PATH}`);
   url.searchParams.append('url', siteURL);
-  url.searchParams.append('device', settings.device);
-  url.searchParams.append('categories', settings.selectedCategories.join(','));
+  url.searchParams.append('strategy', settings.device);
+  for (const category of settings.selectedCategories) {
+    url.searchParams.append('category', category);
+  }
+  url.searchParams.append('utm_source', 'lh-chrome-ext');
   window.open(url.href);
 }
 
