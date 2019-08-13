@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger, idbKeyval */
+/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, PSIApi, logger, idbKeyval */
 
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
@@ -23,36 +23,6 @@ function find(query, context) {
   return result;
 }
 
-/** @typedef {{lighthouseResult: LH.Result}} PSIResponse */
-
-const PSI_KEY = 'AIzaSyAjcDRNN9CX9dCazhqI4lGR7yyQbkd_oYE';
-
-/**
- * @param {string} url
- * @param {string[]} categories
- * @param {string} device
- * @return {Promise<PSIResponse>}
- */
-function callPSI(url, categories, device) {
-  const psiUrl = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
-  /** @type {Record<string, string | string[]>} */
-  const params = {
-    key: PSI_KEY,
-    url,
-    category: categories,
-    strategy: device,
-    utm_source: 'Lighthouse Chrome Extension',
-  };
-  Object.entries(params).forEach(([key, value]) => {
-    const values = Array.isArray(value) ? value : [value];
-    for (const singleValue of values) {
-      psiUrl.searchParams.append(key, singleValue);
-    }
-  });
-
-  return fetch(psiUrl.href).then(res => res.json());
-}
-
 /**
  * Class that manages viewing Lighthouse reports.
  */
@@ -65,6 +35,7 @@ class LighthouseReportViewer {
 
     this._dragAndDropper = new DragAndDrop(this._onFileLoad);
     this._github = new GithubApi();
+    this._psi = new PSIApi();
 
     /**
      * Used for tracking whether to offer to upload as a gist.
@@ -72,12 +43,18 @@ class LighthouseReportViewer {
      */
     this._reportIsFromGist = false;
 
+    this._reportIsFromPSI = false;
+
     const params = new URLSearchParams(location.search);
     const url = params.get('url');
-    const categories = params.get('categories');
-    const device = params.get('device');
-    if (url && categories && device) {
-      this._loadFromPSI(url, categories.split(','), device);
+    if (url) {
+      this._loadFromPSI({
+        url,
+        category: params.has('category') ? params.getAll('category') : undefined,
+        strategy: params.get('strategy') || undefined,
+        locale: params.get('locale') || undefined,
+        utm_source: params.get('utm_source') || undefined,
+      });
     } else {
       this._addEventListeners();
       this._loadFromDeepLink();
@@ -201,6 +178,10 @@ class LighthouseReportViewer {
       let saveCallback = null;
       if (!this._reportIsFromGist) {
         saveCallback = this._onSaveJson;
+      }
+
+      // Only modify history if not from a gist and not using PSI.
+      if (!this._reportIsFromPSI && !this._reportIsFromGist) {
         history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
 
@@ -240,7 +221,7 @@ class LighthouseReportViewer {
       } catch (e) {
         throw new Error('Could not parse JSON file.');
       }
-      this._reportIsFromGist = false;
+      this._reportIsFromGist = this._reportIsFromPSI = false;
       this._replaceReportHtml(json);
     }).catch(err => logger.error(err.message));
   }
@@ -314,7 +295,6 @@ class LighthouseReportViewer {
    * @private
    */
   _onPaste(e) {
-    if (!e.clipboardData) return;
     e.preventDefault();
 
     // Try paste as gist URL.
@@ -332,7 +312,7 @@ class LighthouseReportViewer {
     // Try paste as json content.
     try {
       const json = JSON.parse(e.clipboardData.getData('text'));
-      this._reportIsFromGist = false;
+      this._reportIsFromGist = this._reportIsFromPSI = false;
       this._replaceReportHtml(json);
 
       if (window.ga) {
@@ -396,7 +376,7 @@ class LighthouseReportViewer {
   _listenForMessages() {
     window.addEventListener('message', e => {
       if (e.source === self.opener && e.data.lhresults) {
-        this._reportIsFromGist = false;
+        this._reportIsFromGist = this._reportIsFromPSI = false;
         this._replaceReportHtml(e.data.lhresults);
 
         if (self.opener && !self.opener.closed) {
@@ -415,19 +395,29 @@ class LighthouseReportViewer {
   }
 
   /**
-   * @param {string} url
-   * @param {string[]} categories
-   * @param {string} device
+   * @param {PSIParams} params
    */
-  _loadFromPSI(url, categories, device) {
+  _loadFromPSI(params) {
     const loadingOverlayEl = document.createElement('div');
     loadingOverlayEl.classList.add('lh-loading-overlay');
     loadingOverlayEl.textContent = 'Waiting for Lighthouse results ...';
     find('.viewer-placeholder-inner', document.body).classList.add('lh-loading');
     document.body.appendChild(loadingOverlayEl);
-    callPSI(url, categories, device).then(psiResponse => {
+    this._psi.fetchPSI(params).then(response => {
+      if (!response.lighthouseResult) {
+        if (response.error) {
+          // eslint-disable-next-line no-console
+          console.error(response.error);
+          loadingOverlayEl.innerText = response.error.message;
+        } else {
+          loadingOverlayEl.innerText = 'PSI did not return a Lighthouse Result';
+        }
+        return;
+      }
+
+      this._reportIsFromPSI = true;
       loadingOverlayEl.remove();
-      this._replaceReportHtml(psiResponse.lighthouseResult);
+      this._replaceReportHtml(response.lighthouseResult);
     });
   }
 }
