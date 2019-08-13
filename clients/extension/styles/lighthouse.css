@@ -96,6 +96,11 @@ html, body {
   color: grey;
 }
 
+.devtools-shortcut {
+  font-size: 16px;
+  font-family: monospace;
+}
+
 .button--generate__wrapper {
   display: flex;
   flex-direction: column;

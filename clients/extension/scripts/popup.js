@@ -88,10 +88,18 @@ function generateOptionsList(background, settings) {
   optionsCategoriesList.appendChild(frag);
 }
 
+function fillDevToolsShortcut() {
+  const el = find('.devtools-shortcut');
+  const isMac = /mac/i.test(navigator.platform);
+  el.innerText = isMac ? '⌘⌥I (Cmd + Opt + I)' : 'F12';
+}
+
 /**
  * Initializes the popup's state and UI elements.
  */
 async function initPopup() {
+  fillDevToolsShortcut();
+
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
     if (tabs.length === 0) {
       return;
