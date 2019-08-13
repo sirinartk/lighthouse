@@ -5,6 +5,7 @@
  */
 'use strict';
 
+// Manually define the default categories, instead of bundling a lot of i18n code.
 const defaultCategories = [{
   id: 'performance',
   title: 'Performance',
