@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const extensionEntry = require('../../extension/scripts/extension-entry.js');
+const extensionController = require('../../extension/scripts/extension-controller.js');
 const Config = require('../../../lighthouse-core/config/config.js');
 const defaultConfig = require('../../../lighthouse-core/config/default-config.js');
 const i18n = require('../../../lighthouse-core/lib/i18n/i18n.js');
@@ -16,6 +16,6 @@ describe('Lighthouse chrome extension entry', function() {
   it('default categories should be correct', async () => {
     const categories = Config.getCategories(defaultConfig);
     categories.forEach(cat => cat.title = i18n.getFormatted(cat.title, 'en-US'));
-    expect(extensionEntry.getDefaultCategories()).toEqual(categories);
+    expect(extensionController.getDefaultCategories()).toEqual(categories);
   });
 });

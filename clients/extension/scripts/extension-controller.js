@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2018 Google Inc. All Rights Reserved.
+ * @license Copyright 2019 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -95,31 +95,8 @@ function loadSettings() {
   });
 }
 
-// Run when in extension context, but not in unit tests.
-if (typeof window !== 'undefined' && 'chrome' in window && chrome.runtime) {
-  chrome.runtime.onInstalled.addListener(details => {
-    if (details.previousVersion) {
-      // eslint-disable-next-line no-console
-      console.log('previousVersion', details.previousVersion);
-    }
-  });
-}
-
-if (typeof module !== 'undefined' && module.exports) {
-  // Export for importing types into popup.js and require()ing into unit tests.
-  module.exports = {
-    getDefaultCategories,
-    saveSettings,
-    loadSettings,
-  };
-}
-
-// Expose on window for extension (popup.js), other browser-residing consumers of file.
-if (typeof window !== 'undefined') {
-  // @ts-ignore
-  window.getDefaultCategories = getDefaultCategories;
-  // @ts-ignore
-  window.loadSettings = loadSettings;
-  // @ts-ignore
-  window.saveSettings = saveSettings;
-}
+module.exports = {
+  getDefaultCategories,
+  saveSettings,
+  loadSettings,
+};

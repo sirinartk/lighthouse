@@ -5,9 +5,14 @@
  */
 'use strict';
 
-/** @typedef {typeof import('./extension-entry.js') & {console: typeof console}} BackgroundPage */
-/** @typedef {import('./extension-entry.js').Settings} Settings */
-/** @typedef {import('../../../lighthouse-core/lib/lh-error.js')} LighthouseError */
+/** @typedef {import('./extension-controller.js').Settings} Settings */
+
+/** @type {import('./extension-controller.js')} */
+const ExtensionController = (() => {
+  // @ts-ignore: for popup-test.js
+  if (window.ControllerMock) return window.ControllerMock;
+  return require('./extension-controller.js');
+})();
 
 const DEV = !('update_url' in chrome.runtime.getManifest());
 const VIEWER_ORIGIN = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io';
@@ -76,13 +81,12 @@ function onGenerateReportButtonClick(siteURL, settings) {
 /**
  * Generates a document fragment containing a list of checkboxes and labels
  * for the categories.
- * @param {BackgroundPage} background Reference to the extension's background page.
  * @param {Settings} settings
  */
-function generateOptionsList(background, settings) {
+function generateOptionsList(settings) {
   const frag = document.createDocumentFragment();
 
-  background.getDefaultCategories().forEach(category => {
+  ExtensionController.getDefaultCategories().forEach(category => {
     const isChecked = settings.selectedCategories.includes(category.id);
     frag.appendChild(createOptionItem(category.title, category.id, isChecked));
   });
@@ -97,10 +101,23 @@ function fillDevToolsShortcut() {
   el.innerText = isMac ? '⌘⌥I (Cmd + Opt + I)' : 'F12';
 }
 
+function logVersion() {
+  // @ts-ignore: Run when in extension context, but not in unit tests.
+  if (typeof window.ControllerMock === 'undefined') {
+    chrome.runtime.onInstalled.addListener(details => {
+      if (details.previousVersion) {
+        // eslint-disable-next-line no-console
+        console.log('previousVersion', details.previousVersion);
+      }
+    });
+  }
+}
+
 /**
  * Initializes the popup's state and UI elements.
  */
 async function initPopup() {
+  logVersion();
   fillDevToolsShortcut();
 
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
@@ -116,18 +133,9 @@ async function initPopup() {
     }
   });
 
-  const backgroundPagePromise = new Promise(resolve => chrome.runtime.getBackgroundPage(resolve));
-
-  /**
-   * Really the Window of the background page, but since we only want what's exposed
-   * on window in extension-entry.js, use its module API as the type.
-   * @type {BackgroundPage}
-   */
-  const background = await backgroundPagePromise;
-
   // generate checkboxes from saved settings
-  background.loadSettings().then(settings => {
-    generateOptionsList(background, settings);
+  ExtensionController.loadSettings().then(settings => {
+    generateOptionsList(settings);
     const selectedDeviceEl = /** @type {HTMLInputElement} */ (
       find(`.options__device input[value="${settings.device}"]`));
     selectedDeviceEl.checked = true;
@@ -135,7 +143,7 @@ async function initPopup() {
 
   const generateReportButton = /** @type {HTMLButtonElement} */ (find('#generate-report'));
   generateReportButton.addEventListener('click', () => {
-    background.loadSettings().then(settings => {
+    ExtensionController.loadSettings().then(settings => {
       if (siteURL) {
         onGenerateReportButtonClick(siteURL, settings);
       }
@@ -158,7 +166,7 @@ async function initPopup() {
     const selectedCategories = Array.from(checkboxes).map(input => input.value);
     const device = /** @type {HTMLInputElement} */ (find('input[name="device"]:checked')).value;
 
-    background.saveSettings({
+    ExtensionController.saveSettings({
       selectedCategories,
       device,
     });

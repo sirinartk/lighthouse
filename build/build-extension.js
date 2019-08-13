@@ -10,10 +10,11 @@ const fs = require('fs');
 const archiver = require('archiver');
 const cpy = require('cpy');
 const makeDir = require('make-dir');
-const bundleBuilder = require('./build-bundle.js');
+const browserify = require('browserify');
+const path = require('path');
 
-const sourceName = 'extension-entry.js';
-const distName = 'lighthouse-ext-bundle.js';
+const sourceName = 'popup.js';
+const distName = 'popup-bundle.js';
 
 const sourceDir = __dirname + '/../clients/extension';
 const distDir = __dirname + '/../dist/extension';
@@ -23,10 +24,19 @@ const manifestVersion = require(`${sourceDir}/manifest.json`).version;
 /**
  * Browserify and minify entry point.
  */
-function buildEntryPoint() {
+async function buildEntryPoint() {
   const inFile = `${sourceDir}/scripts/${sourceName}`;
   const outFile = `${distDir}/scripts/${distName}`;
-  return bundleBuilder.build(inFile, outFile);
+  const bundleStream = browserify(inFile).bundle();
+
+  await makeDir(path.dirname(outFile));
+  return new Promise((resolve, reject) => {
+    const writeStream = fs.createWriteStream(outFile);
+    writeStream.on('finish', resolve);
+    writeStream.on('error', reject);
+
+    bundleStream.pipe(writeStream);
+  });
 }
 
 /**
@@ -35,7 +45,6 @@ function buildEntryPoint() {
 async function copyAssets() {
   return cpy([
     '*.html',
-    'scripts/popup.js',
     'styles/**/*.css',
     'images/**/*',
     'manifest.json',

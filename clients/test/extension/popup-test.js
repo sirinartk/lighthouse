@@ -44,7 +44,7 @@ describe('Lighthouse chrome popup', function() {
 
     page = await browser.newPage();
     await page.evaluateOnNewDocument((defaultCategoriesStub) => {
-      const backgroundMock = {
+      const controllerMock = {
         loadSettings: () => Promise.resolve({
           selectedCategories: [],
           useDevTools: false,
@@ -64,11 +64,11 @@ describe('Lighthouse chrome popup', function() {
       });
       Object.defineProperty(chrome, 'runtime', {
         get: () => ({
-          getBackgroundPage: cb => {
-            cb(backgroundMock);
-          },
           getManifest: () => ({}),
         }),
+      });
+      Object.defineProperty(window, 'ControllerMock', {
+        get: () => controllerMock,
       });
     }, defaultCategoriesStub);
 

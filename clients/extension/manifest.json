@@ -9,12 +9,6 @@
     "128": "images/lh_logo_bg.png"
   },
   "default_locale": "en",
-  "background": {
-    "scripts": [
-      "scripts/lighthouse-ext-bundle.js"
-    ],
-    "persistent": false
-  },
   "permissions": [
     "activeTab",
     "storage"
