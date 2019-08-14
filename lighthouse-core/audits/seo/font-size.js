@@ -177,7 +177,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
     // present (`hasSourceURL` is true) - this makes the line/col relative to the start
     // of the style tag, which makes them relevant when the "file" is open in DevTool's
     // Sources panel.
-    const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
+    const addHtmlLocationOffset = stylesheet.isInline && urlIsNetworkResource;
     if (addHtmlLocationOffset) {
       line += stylesheet.startLine;
       // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
