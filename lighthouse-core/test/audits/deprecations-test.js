@@ -33,8 +33,7 @@ describe('Console deprecations audit', () => {
     assert.equal(auditResult.score, 0);
     expect(auditResult.displayValue).toBeDisplayString('1 warning found');
     assert.equal(auditResult.details.items.length, 1);
-    assert.equal(auditResult.details.items[0].url, '');
-    assert.equal(auditResult.details.items[0].lineNumber, undefined);
+    assert.equal(auditResult.details.items[0].source, null);
   });
 
   it('fails when deprecation messages are found', () => {
@@ -69,7 +68,7 @@ describe('Console deprecations audit', () => {
     assert.equal(auditResult.score, 0);
     expect(auditResult.displayValue).toBeDisplayString('2 warnings found');
     assert.equal(auditResult.details.items.length, 2);
-    assert.equal(auditResult.details.items[0].url, URL);
-    assert.equal(auditResult.details.items[0].lineNumber, 123);
+    assert.equal(auditResult.details.items[0].source.url, URL);
+    assert.equal(auditResult.details.items[0].source.line, 123);
   });
 });
