@@ -104,7 +104,7 @@ declare global {
 
       export type TableItem = {
         debugData?: DebugData;
-        [p: string]: string | number | boolean | undefined | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
+        [p: string]: null | string | number | boolean | undefined | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
       }
 
       export interface OpportunityColumnHeading {

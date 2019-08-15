@@ -381,10 +381,14 @@ class DetailsRenderer {
 
   /**
    * @param {LH.Audit.Details.SourceLocationValue} item
-   * @return {Element}
+   * @return {Element|null}
    * @protected
    */
   renderSourceLocation(item) {
+    if (!item.url) {
+      return null;
+    }
+
     // Lines are never shown as zero-indexed.
     const line = item.line + 1;
     const column = item.column;
