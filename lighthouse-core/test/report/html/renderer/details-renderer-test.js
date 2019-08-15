@@ -393,7 +393,7 @@ describe('DetailsRenderer', () => {
       const sourceLocation = {
         type: 'source-location',
         url: 'https://www.example.com/script.js',
-        urlIsNetworkResource: true,
+        urlProvider: 'network',
         line: 10,
         column: 5,
       };
@@ -418,7 +418,7 @@ describe('DetailsRenderer', () => {
       const sourceLocation = {
         type: 'source-location',
         url: 'https://www.example.com/script.js',
-        urlIsNetworkResource: false,
+        urlProvider: 'comment',
         line: 0,
         column: 0,
       };
