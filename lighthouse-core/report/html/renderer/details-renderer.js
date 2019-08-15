@@ -394,7 +394,7 @@ class DetailsRenderer {
     const column = item.column;
 
     let element;
-    if (item.urlIsNetworkResource) {
+    if (item.urlProvider === 'network') {
       element = this.renderTextURL(item.url);
       this._dom.find('a', element).textContent += `:${line}:${column}`;
     } else {

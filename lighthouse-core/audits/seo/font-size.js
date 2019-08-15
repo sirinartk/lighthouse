@@ -166,7 +166,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
     // DevTools protocol does not provide the resource URL if there is a magic `sourceURL` comment.
     // `sourceURL` will be the raw value of the magic `sourceURL` comment, which likely refers to
     // a file at build time, not one that is served over the network that we could link to.
-    const urlIsNetworkResource = !stylesheet.hasSourceURL;
+    const urlProvider = stylesheet.hasSourceURL ? 'comment' : 'network';
 
     let line = range.startLine;
     let column = range.startColumn;
@@ -177,7 +177,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
     // present (`hasSourceURL` is true) - this makes the line/col relative to the start
     // of the style tag, which makes them relevant when the "file" is open in DevTool's
     // Sources panel.
-    const addHtmlLocationOffset = stylesheet.isInline && urlIsNetworkResource;
+    const addHtmlLocationOffset = stylesheet.isInline && urlProvider !== 'comment';
     if (addHtmlLocationOffset) {
       line += stylesheet.startLine;
       // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
@@ -188,7 +188,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
 
     const url = stylesheet.sourceURL;
     return {
-      source: {type: 'source-location', urlIsNetworkResource, url, line, column},
+      source: {type: 'source-location', url, urlProvider, line, column},
       selector,
     };
   }

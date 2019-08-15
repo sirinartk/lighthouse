@@ -169,9 +169,9 @@ declare global {
 
       export interface SourceLocationValue {
         type: 'source-location';
-        /** False when url came from a magic comment sourceURL. */
-        urlIsNetworkResource: boolean;
         url: string;
+        /** 'network' when the url is the actual, observed resource url. 'comment' when the url comes from a sourceMapURL comment or X-SourceMap header */
+        urlProvider: 'network' | 'comment';
         line: number;
         column: number;
       }

@@ -68,9 +68,9 @@ class Deprecations extends Audit {
         source = {
           type: /** @type {'source-location'} */('source-location'),
           url: log.entry.url,
+          urlProvider: /** @type {'network'} */('network'),
           line,
           column,
-          urlIsNetworkResource: true,
         };
       }
       return {
