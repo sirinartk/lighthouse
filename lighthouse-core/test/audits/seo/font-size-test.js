@@ -318,7 +318,7 @@ describe('SEO: Font size audit', () => {
       assert.deepEqual(auditResult.details.items[0].source, {
         type: 'source-location',
         url: 'http://www.example.com/styles-1.css',
-        urlIsNetworkResource: true,
+        urlProvider: 'network',
         line: 50,
         column: 50,
       });
@@ -343,7 +343,7 @@ describe('SEO: Font size audit', () => {
       assert.deepEqual(auditResult.details.items[0].source, {
         type: 'source-location',
         url: 'http://www.example.com',
-        urlIsNetworkResource: true,
+        urlProvider: 'network',
         line: 15,
         column: 10,
       });
@@ -368,7 +368,7 @@ describe('SEO: Font size audit', () => {
       assert.deepEqual(auditResult.details.items[0].source, {
         type: 'source-location',
         url: 'http://www.example.com',
-        urlIsNetworkResource: true,
+        urlProvider: 'network',
         line: 5,
         column: 15,
       });
@@ -394,7 +394,7 @@ describe('SEO: Font size audit', () => {
       assert.deepEqual(auditResult.details.items[0].source, {
         type: 'source-location',
         url: 'something-magical.css',
-        urlIsNetworkResource: false,
+        urlProvider: 'comment',
         line: 10,
         column: 10,
       });
