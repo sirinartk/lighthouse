@@ -60,7 +60,7 @@ describe('Console deprecations audit', () => {
             source: 'somethingelse',
             lineNumber: 789,
             url: 'http://example3.com',
-            text: 'Not a deprecation message 456',
+            text: 'Not a deprecation message 789',
           },
         },
       ],
