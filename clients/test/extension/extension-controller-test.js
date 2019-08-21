@@ -16,6 +16,6 @@ describe('Lighthouse chrome extension entry', function() {
   it('default categories should be correct', async () => {
     const categories = Config.getCategories(defaultConfig);
     categories.forEach(cat => cat.title = i18n.getFormatted(cat.title, 'en-US'));
-    expect(extensionController.getDefaultCategories()).toEqual(categories);
+    expect(extensionController.DEFAULT_CATEGORIES).toEqual(categories);
   });
 });

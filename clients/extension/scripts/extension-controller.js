@@ -6,7 +6,7 @@
 'use strict';
 
 // Manually define the default categories, instead of bundling a lot of i18n code.
-const defaultCategories = [{
+const DEFAULT_CATEGORIES = [{
   id: 'performance',
   title: 'Performance',
 }, {
@@ -29,14 +29,6 @@ const STORAGE_KEY = 'lighthouse_audits';
 const SETTINGS_KEY = 'lighthouse_settings';
 
 /**
- * Returns list of top-level categories from the default config.
- * @return {Array<{title: string, id: string}>}
- */
-function getDefaultCategories() {
-  return defaultCategories;
-}
-
-/**
  * Save currently selected set of category categories to local storage.
  * @param {Settings} settings
  */
@@ -49,7 +41,7 @@ function saveSettings(settings) {
   };
 
   // Stash selected categories.
-  getDefaultCategories().forEach(category => {
+  DEFAULT_CATEGORIES.forEach(category => {
     storage[STORAGE_KEY][category.id] = settings.selectedCategories.includes(category.id);
   });
 
@@ -73,7 +65,7 @@ function loadSettings() {
       // always up to date.
       /** @type {Record<string, boolean>} */
       const defaultCategories = {};
-      getDefaultCategories().forEach(category => {
+      DEFAULT_CATEGORIES.forEach(category => {
         defaultCategories[category.id] = true;
       });
 
@@ -95,7 +87,7 @@ function loadSettings() {
 }
 
 module.exports = {
-  getDefaultCategories,
+  DEFAULT_CATEGORIES,
   saveSettings,
   loadSettings,
 };
