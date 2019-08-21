@@ -104,14 +104,14 @@ function fillDevToolsShortcut() {
 
 function logVersion() {
   // @ts-ignore: Run when in extension context, but not in unit tests.
-  if (typeof window.ControllerMock === 'undefined') {
-    chrome.runtime.onInstalled.addListener(details => {
-      if (details.previousVersion) {
-        // eslint-disable-next-line no-console
-        console.log('previousVersion', details.previousVersion);
-      }
-    });
-  }
+  if (typeof window.ControllerMock !== 'undefined') return;
+
+  chrome.runtime.onInstalled.addListener(details => {
+    if (details.previousVersion) {
+      // eslint-disable-next-line no-console
+      console.log('previousVersion', details.previousVersion);
+    }
+  });
 }
 
 /**
