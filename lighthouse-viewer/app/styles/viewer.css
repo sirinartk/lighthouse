@@ -60,6 +60,9 @@
   cursor: pointer;
   background-color: #fff;
 }
+.viewer-placeholder-inner.lh-loading {
+  filter: blur(2px);
+}
 .viewer-placeholder-inner.dropping {
   border-color: currentColor;
 }
@@ -123,16 +126,4 @@
 /* open-in-gist option visible in Viewer */
 .lh-tools__dropdown .lh-tools--gist {
   display: block !important;
-}
-
-.lh-loading-overlay {
-  position: absolute;
-  top: 50%;
-  transform: translateX(-50%);
-  left: 50%;
-  filter: none;
-}
-
-.lh-loading {
-  filter: blur(2px);
 }

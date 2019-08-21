@@ -17,9 +17,10 @@ const portNumber = 10200;
 const viewerUrl = `http://localhost:${portNumber}/dist/viewer/index.html`;
 const sampleLhr = __dirname + '/../../lighthouse-core/test/results/sample_v2.json';
 
-const config = require(path.resolve(__dirname, '../../lighthouse-core/config/default-config.js'));
-const lighthouseCategories = Object.keys(config.categories);
-const getAuditsOfCategory = category => config.categories[category].auditRefs;
+const defaultConfig =
+  require(path.resolve(__dirname, '../../lighthouse-core/config/default-config.js'));
+const lighthouseCategories = Object.keys(defaultConfig.categories);
+const getAuditsOfCategory = category => defaultConfig.categories[category].auditRefs;
 
 // TODO: should be combined in some way with clients/test/extension/extension-test.js
 describe('Lighthouse Viewer', () => {
@@ -78,7 +79,7 @@ describe('Lighthouse Viewer', () => {
     ]);
   });
 
-  describe('Upload', () => {
+  describe('Renders the report', () => {
     beforeAll(async function() {
       await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
       const fileInput = await viewerPage.$('#hidden-file-input');
@@ -142,14 +143,31 @@ describe('Lighthouse Viewer', () => {
   });
 
   describe('PSI', () => {
-    let onApiRequestInterception;
-    let apiRequestInterceptionResolve;
+    let interceptedRequest;
+    let psiResponse;
 
-    function onRequest(interceptedRequest) {
-      if (interceptedRequest.url().includes('https://www.googleapis.com')) {
-        apiRequestInterceptionResolve(interceptedRequest);
+    const sampleLhrJson = JSON.parse(fs.readFileSync(sampleLhr, 'utf-8'));
+    const goodPsiResponse = {
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({lighthouseResult: sampleLhrJson}),
+    };
+    const badPsiResponse = {
+      status: 500,
+      contentType: 'application/json',
+      body: JSON.stringify({error: {message: 'Test error'}}),
+    };
+
+    // Sniffs just the request made to the PSI API. All other requests
+    // fall through.
+    // To set the mocked PSI response, assign `psiResponse`.
+    // To read the intercepted request, use `interceptedRequest`.
+    function onRequest(request) {
+      if (request.url().includes('https://www.googleapis.com')) {
+        interceptedRequest = request;
+        request.respond(psiResponse);
       } else {
-        interceptedRequest.continue();
+        request.continue();
       }
     }
 
@@ -164,65 +182,114 @@ describe('Lighthouse Viewer', () => {
     });
 
     beforeEach(() => {
-      onApiRequestInterception = new Promise(resolve => apiRequestInterceptionResolve = resolve);
+      interceptedRequest = undefined;
+      psiResponse = undefined;
     });
 
     it('should call out to PSI with all categories by default', async () => {
-      const url = `${viewerUrl}?url=https://www.example.com`;
+      psiResponse = goodPsiResponse;
+
+      const url = `${viewerUrl}?psiurl=https://www.example.com`;
       await viewerPage.goto(url);
-
-      // Intercept and respond with sample lhr.
-      const interceptedRequest = await onApiRequestInterception;
-      const interceptedUrl = new URL(interceptedRequest.url());
-      expect(interceptedUrl.origin + interceptedUrl.pathname).toEqual('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
-      expect(interceptedUrl.searchParams.get('url')).toEqual('https://www.example.com');
-      expect(interceptedUrl.searchParams.getAll('category')).toEqual([
-        'performance',
-        'accessibility',
-        'seo',
-        'best-practices',
-        'pwa',
-      ]);
-
-      const psiResponse = {
-        lighthouseResult: JSON.parse(fs.readFileSync(sampleLhr, 'utf-8')),
-      };
-      await interceptedRequest.respond({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(psiResponse),
-      });
 
       // Wait for report to render.
       await viewerPage.waitForSelector('.lh-columns');
+
+      const interceptedUrl = new URL(interceptedRequest.url());
+      expect(interceptedUrl.origin + interceptedUrl.pathname)
+        .toEqual('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
+
+      const params = {
+        key: interceptedUrl.searchParams.get('key'),
+        url: interceptedUrl.searchParams.get('url'),
+        category: interceptedUrl.searchParams.getAll('category'),
+        strategy: interceptedUrl.searchParams.get('strategy'),
+        locale: interceptedUrl.searchParams.get('locale'),
+        utm_source: interceptedUrl.searchParams.get('utm_source'),
+      };
+      expect(params).toEqual({
+        key: 'AIzaSyAjcDRNN9CX9dCazhqI4lGR7yyQbkd_oYE',
+        url: 'https://www.example.com',
+        // Order in the api call is important to PSI!
+        category: [
+          'performance',
+          'accessibility',
+          'seo',
+          'best-practices',
+          'pwa',
+        ],
+        strategy: 'mobile',
+        // These values aren't set by default.
+        locale: null,
+        utm_source: null,
+      });
+
+      // Confirm that all default categories are used.
+      const defaultCategories = Object.keys(defaultConfig.categories).sort();
+      expect(interceptedUrl.searchParams.getAll('category').sort()).toEqual(defaultCategories);
 
       // No errors.
       assert.deepStrictEqual(pageErrors, []);
 
       // All categories.
-      const categories = await getCategoryElementsIds();
+      const categoryElementIds = await getCategoryElementsIds();
       assert.deepStrictEqual(
-        categories.sort(),
+        categoryElementIds.sort(),
         lighthouseCategories.sort(),
         `all categories not found`
       );
+
+      // Should not clear the query string.
+      expect(await viewerPage.url()).toEqual(url);
     });
 
-    it('should call out to PSI with specified categoeries', async () => {
-      const url = `${viewerUrl}?url=https://www.example.com&category=seo&category=pwa`;
+    it('should call out to PSI with specified categories', async () => {
+      psiResponse = goodPsiResponse;
+
+      const url = `${viewerUrl}?psiurl=https://www.example.com&category=seo&category=pwa&utm_source=utm&locale=es`;
       await viewerPage.goto(url);
 
-      const interceptedRequest = await onApiRequestInterception;
-      const interceptedUrl = new URL(interceptedRequest.url());
-      expect(interceptedUrl.origin + interceptedUrl.pathname).toEqual('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
-      expect(interceptedUrl.searchParams.get('url')).toEqual('https://www.example.com');
-      expect(interceptedUrl.searchParams.getAll('category')).toEqual([
-        'seo',
-        'pwa',
-      ]);
+      // Wait for report to render.call out to PSI with specified categories
+      await viewerPage.waitForSelector('.lh-columns');
 
-      // Just wanted to check the params are correct, let's abort. Previous test does more of an end-to-end test.
-      interceptedRequest.abort();
+      const interceptedUrl = new URL(interceptedRequest.url());
+      expect(interceptedUrl.origin + interceptedUrl.pathname)
+        .toEqual('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
+
+      const params = {
+        url: interceptedUrl.searchParams.get('url'),
+        category: interceptedUrl.searchParams.getAll('category'),
+        locale: interceptedUrl.searchParams.get('locale'),
+        utm_source: interceptedUrl.searchParams.get('utm_source'),
+      };
+      expect(params).toEqual({
+        url: 'https://www.example.com',
+        category: [
+          'seo',
+          'pwa',
+        ],
+        locale: 'es',
+        utm_source: 'utm',
+      });
+
+      // No errors.
+      assert.deepStrictEqual(pageErrors, []);
+    });
+
+    it('should handle errors from the API', async () => {
+      psiResponse = badPsiResponse;
+
+      const url = `${viewerUrl}?psiurl=https://www.example.com`;
+      await viewerPage.goto(url);
+
+      // Wait for error.
+      const errorEl = await viewerPage.waitForSelector('#lh-log.show');
+      const errorMessage = await viewerPage.evaluate(errorEl => errorEl.textContent, errorEl);
+      expect(errorMessage).toBe('Test error');
+
+      // One error.
+      expect(pageErrors).toHaveLength(1);
+      expect(pageErrors[0].message).toContain('Test error');
     });
   });
 });

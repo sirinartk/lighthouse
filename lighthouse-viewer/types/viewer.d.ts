@@ -39,14 +39,6 @@ declare global {
     // Inserted by viewer gulpfile build.
     LH_CURRENT_VERSION: string;
   }
-
-  interface PSIParams {
-    url: string;
-    category?: string[];
-    locale?: string;
-    strategy?: string;
-    utm_source?: string;
-  }
 }
 
 // empty export to keep file a module

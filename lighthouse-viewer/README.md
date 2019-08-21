@@ -21,10 +21,21 @@ yarn deploy-viewer
 
 For more information on deployment, see `releasing.md`.
 
+## Gist
+
+http://localhost:8000/?gist=bd1779783a5bbcb348564a58f80f7099
+
 ## PSI
 
+Example:
 ```
-http://localhost:8000/?url=https://www.example.com&category=pwa&category=seo
+http://localhost:8000/?psiurl=https://www.example.com&category=pwa&category=seo
 ```
 
-Other options: `locale`, `strategy`, `utm_source`
+Options:
+
+`psiurl` - URL to audit
+`category` - Category to enable. One per category.
+`strategy` - mobile, desktop
+`locale` - locale to render report with
+`utm_source` - id that identifies the tool using the viewer

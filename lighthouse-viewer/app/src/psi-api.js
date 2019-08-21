@@ -18,6 +18,15 @@ const PSI_DEFAULT_CATEGORIES = [
 ];
 
 /**
+ * @typedef PSIParams
+ * @property {string} url
+ * @property {string[]=} category
+ * @property {string=} locale
+ * @property {string=} strategy
+ * @property {string=} utm_source
+ */
+
+/**
  * Wrapper around the PSI API for fetching LHR.
  */
 class PSIApi {
@@ -26,20 +35,17 @@ class PSIApi {
    * @return {Promise<PSIResponse>}
    */
   fetchPSI(params) {
-    params = Object.assign({
-      key: PSI_KEY,
-      strategy: 'mobile',
-    }, params);
-
     const apiUrl = new URL(PSI_URL);
-    Object.entries(params).forEach(([key, value]) => {
-      if (key === 'category') return;
-      if (value) apiUrl.searchParams.append(key, value);
-    });
+    // eslint-disable-next-line prefer-const
+    for (let [name, value] of Object.entries(params)) {
+      if (Array.isArray(value)) continue;
+      if (name === 'strategy') value = value || 'mobile';
+      if (typeof value !== 'undefined') apiUrl.searchParams.append(name, value);
+    }
     for (const singleCategory of (params.category || PSI_DEFAULT_CATEGORIES)) {
       apiUrl.searchParams.append('category', singleCategory);
     }
-
+    apiUrl.searchParams.append('key', PSI_KEY);
     return fetch(apiUrl.href).then(res => res.json());
   }
 }
@@ -47,4 +53,5 @@ class PSIApi {
 // node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = PSIApi;
+  module.exports.PSI_DEFAULT_CATEGORIES = PSI_DEFAULT_CATEGORIES;
 }
