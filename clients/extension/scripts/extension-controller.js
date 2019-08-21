@@ -23,7 +23,6 @@ const defaultCategories = [{
   title: 'Progressive Web App',
 }];
 
-/** @typedef {import('../../../lighthouse-core/gather/connections/connection.js')} Connection */
 /** @typedef {{selectedCategories: string[], device: string}} Settings */
 
 const STORAGE_KEY = 'lighthouse_audits';
