@@ -14,6 +14,7 @@ const ExtensionController = (() => {
   return require('./extension-controller.js');
 })();
 
+// `update_url` only exists in production - it's a property that the Chrome web store injects.
 const DEV = !('update_url' in chrome.runtime.getManifest());
 const VIEWER_ORIGIN = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io';
 const VIEWER_PATH = DEV ? '/' : '/lighthouse/viewer/';
