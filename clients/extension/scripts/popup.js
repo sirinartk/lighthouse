@@ -69,7 +69,7 @@ function createOptionItem(text, id, isChecked) {
  */
 function onGenerateReportButtonClick(siteURL, settings) {
   const url = new URL(`${VIEWER_ORIGIN}${VIEWER_PATH}`);
-  url.searchParams.append('url', siteURL);
+  url.searchParams.append('psiurl', siteURL);
   url.searchParams.append('strategy', settings.device);
   for (const category of settings.selectedCategories) {
     url.searchParams.append('category', category);
