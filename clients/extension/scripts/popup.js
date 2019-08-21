@@ -87,7 +87,7 @@ function onGenerateReportButtonClick(siteURL, settings) {
 function generateOptionsList(settings) {
   const frag = document.createDocumentFragment();
 
-  ExtensionController.getDefaultCategories().forEach(category => {
+  ExtensionController.DEFAULT_CATEGORIES.forEach(category => {
     const isChecked = settings.selectedCategories.includes(category.id);
     frag.appendChild(createOptionItem(category.title, category.id, isChecked));
   });
