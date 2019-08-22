@@ -42,7 +42,7 @@ async function buildEntryPoint() {
 /**
  * @return {Promise<void>}
  */
-async function copyAssets() {
+function copyAssets() {
   return cpy([
     '*.html',
     'styles/**/*.css',
