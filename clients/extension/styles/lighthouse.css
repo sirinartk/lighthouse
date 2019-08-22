@@ -46,6 +46,15 @@ html, body {
   margin: 2px auto 10px;
 }
 
+.errormsg {
+  border: 2px solid red;
+  border-radius: 20px;
+  padding: 5px;
+}
+.errormsg:empty {
+  display: none;
+}
+
 .button {
   cursor: pointer;
   font-family: 'Roboto', Arial, sans-serif;

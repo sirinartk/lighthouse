@@ -129,8 +129,13 @@ async function initPopup() {
     siteURL = tabs[0].url || null;
     const url = siteURL ? new URL(siteURL) : null;
     const host = url ? url.host : '';
+    const protocol = url ? url.protocol : '';
     if (host.startsWith('localhost')) {
       generateReportButton.disabled = true;
+      errorMessageEl.innerText = 'Use DevTools to audit pages on localhost.';
+    } else if (/(chrome|chrome-extension):/.test(protocol)) {
+      generateReportButton.disabled = true;
+      errorMessageEl.innerText = `Cannot audit ${protocol}// pages.`;
     }
   });
 
@@ -141,6 +146,8 @@ async function initPopup() {
       find(`.options__device input[value="${settings.device}"]`));
     selectedDeviceEl.checked = true;
   });
+
+  const errorMessageEl = /** @type {HTMLButtonElement} */ (find('.errormsg'));
 
   const generateReportButton = /** @type {HTMLButtonElement} */ (find('#generate-report'));
   generateReportButton.addEventListener('click', () => {
