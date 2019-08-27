@@ -47,8 +47,8 @@ html, body {
 }
 
 .errormsg {
-  border: 2px solid red;
-  border-radius: 20px;
+  border: 2px solid #FF4E42;
+  border-radius: 10px;
   padding: 5px;
 }
 .errormsg:empty {
@@ -155,4 +155,8 @@ html, body {
 
 .options__submit {
   grid-column: 2 / 2;
+}
+
+.options label {
+  display: block
 }
