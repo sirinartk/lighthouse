@@ -16,8 +16,7 @@ const ExtensionController = (() => {
 
 // `update_url` only exists in production - it's a property that the Chrome web store injects.
 const DEV = !('update_url' in chrome.runtime.getManifest());
-const VIEWER_ORIGIN = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io';
-const VIEWER_PATH = DEV ? '/' : '/lighthouse/viewer/';
+const VIEWER_URL = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io/lighthouse/viewer/';
 
 const subpageVisibleClass = 'subpage--visible';
 
@@ -69,7 +68,7 @@ function createOptionItem(text, id, isChecked) {
  * @param {Settings} settings
  */
 function onGenerateReportButtonClick(siteURL, settings) {
-  const url = new URL(`${VIEWER_ORIGIN}${VIEWER_PATH}`);
+  const url = new URL(VIEWER_URL);
   url.searchParams.append('psiurl', siteURL);
   url.searchParams.append('strategy', settings.device);
   for (const category of settings.selectedCategories) {
