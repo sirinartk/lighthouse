@@ -122,20 +122,18 @@ async function initPopup() {
   fillDevToolsShortcut();
 
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
-    if (tabs.length === 0) {
+    if (tabs.length === 0 || !tabs[0].url) {
       return;
     }
 
-    siteURL = tabs[0].url || null;
-    const url = siteURL ? new URL(siteURL) : null;
-    const host = url ? url.host : '';
-    const protocol = url ? url.protocol : '';
-    if (host.startsWith('localhost')) {
+    siteURL = tabs[0].url;
+    const url = new URL(siteURL);
+    if (url.host.startsWith('localhost')) {
       generateReportButton.disabled = true;
       errorMessageEl.innerText = 'Use DevTools to audit pages on localhost.';
-    } else if (/(chrome|chrome-extension):/.test(protocol)) {
+    } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
       generateReportButton.disabled = true;
-      errorMessageEl.innerText = `Cannot audit ${protocol}// pages.`;
+      errorMessageEl.innerText = `Cannot audit ${url.protocol}// pages.`;
     }
   });
 
