@@ -55,7 +55,7 @@ function createOptionItem(text, id, isChecked) {
 
   const label = document.createElement('label');
   label.appendChild(input);
-  label.appendChild(document.createTextNode(text));
+  label.appendChild(document.createElement('span')).textContent = text;
   const listItem = document.createElement('li');
   listItem.appendChild(label);
 

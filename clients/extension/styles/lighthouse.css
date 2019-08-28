@@ -137,6 +137,19 @@ html, body {
   pointer-events: auto;
 }
 
+.psi-notice {
+  display: flex;
+  align-items: center;
+}
+
+.psi-notice__icon {
+  margin-right: 5px;
+}
+
+.psi-notice__poweredby {
+  font-size: 10px;
+}
+
 /* 1. scrollbar when extension is too small */
 .options {
   overflow: auto; /* [1] */
@@ -160,4 +173,9 @@ html, body {
 
 .options label {
   display: block
+}
+
+.options input:checked + span {
+  color: #2962FF;
+  font-weight: bold;
 }
