@@ -128,12 +128,12 @@ async function initPopup() {
 
     siteURL = tabs[0].url;
     const url = new URL(siteURL);
-    if (url.host.startsWith('localhost')) {
+    if (url.hostname === 'localhost') {
       generateReportButton.disabled = true;
-      errorMessageEl.innerText = 'Use DevTools to audit pages on localhost.';
+      errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
     } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
       generateReportButton.disabled = true;
-      errorMessageEl.innerText = `Cannot audit ${url.protocol}// pages.`;
+      errorMessageEl.textContent = `Cannot audit ${url.protocol}// pages.`;
     }
   });
 
