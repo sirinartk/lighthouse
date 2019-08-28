@@ -99,7 +99,7 @@ function generateOptionsList(settings) {
 function fillDevToolsShortcut() {
   const el = find('.devtools-shortcut');
   const isMac = /mac/i.test(navigator.platform);
-  el.innerText = isMac ? '⌘⌥I (Cmd + Opt + I)' : 'F12';
+  el.textContent = isMac ? '⌘⌥I (Cmd+Opt+I)' : 'F12';
 }
 
 function logVersion() {
