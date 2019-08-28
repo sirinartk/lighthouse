@@ -47,9 +47,10 @@ html, body {
 }
 
 .errormsg {
-  border: 2px solid #FF4E42;
   border-radius: 10px;
   padding: 5px;
+  margin: 0 5px;
+  background-color: #ffcdd2;
 }
 .errormsg:empty {
   display: none;
@@ -74,6 +75,7 @@ html, body {
 
 .button:disabled {
   background-color: #cccccc;
+  border: none;
   color: #666666;
   cursor: not-allowed;
 }
