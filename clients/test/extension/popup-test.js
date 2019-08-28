@@ -12,13 +12,20 @@ const puppeteer = require('../../../node_modules/puppeteer/index.js');
 
 const lighthouseExtensionPath = path.resolve(__dirname, '../../../dist/extension');
 
-const defaultCategoriesStub = [{
-  id: 'performance',
-  title: 'Performance',
-}, {
-  id: 'accessibility',
-  title: 'Accessibility',
-}];
+const defaultCategoriesStub = [
+  {
+    id: 'performance',
+    title: 'Performance',
+  },
+  {
+    id: 'pwa',
+    title: 'Progressive Web App',
+  },
+  {
+    id: 'seo',
+    title: 'SEO',
+  },
+];
 
 describe('Lighthouse chrome popup', function() {
   // eslint-disable-next-line no-console
