@@ -12,20 +12,13 @@ const puppeteer = require('../../../node_modules/puppeteer/index.js');
 
 const lighthouseExtensionPath = path.resolve(__dirname, '../../../dist/extension');
 
-const defaultCategoriesStub = [
-  {
-    id: 'performance',
-    title: 'Performance',
-  },
-  {
-    id: 'pwa',
-    title: 'Progressive Web App',
-  },
-  {
-    id: 'seo',
-    title: 'SEO',
-  },
-];
+const defaultCategoriesStub = [{
+  id: 'performance',
+  title: 'Performance',
+}, {
+  id: 'accessibility',
+  title: 'Accessibility',
+}];
 
 describe('Lighthouse chrome popup', function() {
   // eslint-disable-next-line no-console
@@ -50,7 +43,7 @@ describe('Lighthouse chrome popup', function() {
           useDevTools: false,
           device: 'mobile',
         }),
-        getDefaultCategories: () => defaultCategoriesStub,
+        DEFAULT_CATEGORIES: defaultCategoriesStub,
       };
 
       Object.defineProperty(chrome, 'tabs', {
@@ -90,7 +83,7 @@ describe('Lighthouse chrome popup', function() {
   });
 
   it('should populate the category checkboxes correctly', async function() {
-    const checkboxTitles = await page.$$eval('li label', els => els.map(e => e.textContent));
+    const checkboxTitles = await page.$$eval('li label span', els => els.map(e => e.textContent));
     const checkboxValues = await page.$$eval('li label input', els => els.map(e => e.value));
 
     for (const {title, id} of defaultCategoriesStub) {
