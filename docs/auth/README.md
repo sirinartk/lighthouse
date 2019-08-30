@@ -82,9 +82,10 @@ At this point, the session that Puppeteer is managing is now logged into our sit
 We can close the page we used to login:
 ```js
 await page.close();
+// The page has been closed, but the browser still has the relevant session.
 ```
 
-All that's left to do now is run Lighthouse, using the same port as before:
+Now we run Lighthouse, using the same port as before:
 ```js
 const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
 await browser.close();
