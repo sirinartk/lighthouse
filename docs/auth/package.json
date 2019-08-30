@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "jest test.js",
+    "test": "jest example-lh-auth.test.js",
     "start": "node server/server.js"
   },
   "dependencies": {
