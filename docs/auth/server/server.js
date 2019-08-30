@@ -39,10 +39,6 @@ app.get('/dashboard', loginRequired, (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  if (req.user) {
-    return res.redirect('/dashboard');
-  }
-
   res.render('index');
 });
 
