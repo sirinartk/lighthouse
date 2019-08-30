@@ -2,7 +2,7 @@
 
 Standard usages of Lighthouse processes a page as a new user, with no previous session or storage data. This means that pages requiring authenticated access do not work without some additional setup. There are multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach (Puppeteer), but mentions other approaches briefly at the end.
 
-If you just want to view the code, see `./example-lh-auth.js`.
+If you just want to view the code, see [./example-lh-auth.js](example-lh-auth.js).
 
 ## The Example Site
 
@@ -87,7 +87,8 @@ const lhr = result.lhr;
 
 ## Puppetter in Your Integration Tests
 
-See `./example-lh-auth-test.js` for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
+
+See [./example-lh-auth.test.js](example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
 
 ## Other Approaches
 
