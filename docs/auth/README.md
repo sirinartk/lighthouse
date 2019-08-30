@@ -29,10 +29,16 @@ yarn start # start the server on http://localhost:8000
 
 ## Puppeteer
 
-We will use Puppeteer to open a Chrome browser and setup our state by filling and submitting a login form. We'll designate a specific port for Chrome to open a debugging session, so that we can pass the same port to Lighthouse.
+We can use Puppeteer - a browser automation tool - to manipulate a setup a session programatically.
+
+1. Launch a new browser.
+1. Navigate to the login page.
+1. Fill and submit the login form.
+1. Run Lighthouse using the same browser.
 
 To launch Chrome:
 ```js
+// This port will be used by Lighthouse later.
 const PORT = 8041;
 const browser = await puppeteer.launch({
   args: [`--remote-debugging-port=${PORT}`],
