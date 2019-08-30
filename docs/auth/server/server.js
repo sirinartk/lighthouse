@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
 const mustacheExpress = require('mustache-express');
 const session = require('express-session');
 const http = require('http');
@@ -13,15 +13,15 @@ app.set('views', __dirname + '/views');
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 
 app.use(session({
   secret: 'notverysecret',
   resave: true,
-  saveUninitialized: false
+  saveUninitialized: false,
 }));
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', (req, res, next) => {
-  const { email, password } = req.body;
+  const {email, password} = req.body;
   if (email !== 'admin@example.com' || password !== 'password') {
     return next(createError(401));
   }
@@ -61,16 +61,16 @@ app.get('/logout', (req, res, next) => {
 });
 
 // Error handlers
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = err;
 
   res.status(err.status || 500);
-  res.json({ err });
+  res.json({err});
 });
 
 const server = http.createServer(app);

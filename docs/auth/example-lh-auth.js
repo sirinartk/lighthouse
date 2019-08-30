@@ -9,7 +9,7 @@ const PORT = 8041;
 async function login(browser) {
   const page = await browser.newPage();
   await page.goto('http://localhost:8000');
-  await page.waitForSelector('input[type="email"]', { visible: true });
+  await page.waitForSelector('input[type="email"]', {visible: true});
 
   // Fill in and submit login form.
   const emailInput = await page.$('input[type="email"]');
@@ -33,7 +33,7 @@ async function main() {
   await login(browser);
 
   // Direct Lighthouse to use the same port.
-  const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
+  const result = await lighthouse('http://localhost:8000/dashboard', {port: PORT});
   await browser.close();
 
   // Output the result.

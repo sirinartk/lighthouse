@@ -11,10 +11,10 @@ jest.setTimeout(30000);
 
 /**
  * @param {string} url
- * @return {Promise<LH.Result>} 
+ * @return {Promise<LH.Result>}
  */
 async function runLighthouse(url) {
-  const result = await lighthouse(url, { port: DEBUG_PORT });
+  const result = await lighthouse(url, {port: DEBUG_PORT});
   return result.lhr;
 }
 
@@ -85,7 +85,7 @@ describe('my site', () => {
     beforeEach(async () => {
       const loginPage = await browser.newPage();
       await loginPage.goto('http://localhost:8000/');
-      await loginPage.waitForSelector('input[type="email"]', { visible: true });
+      await loginPage.waitForSelector('input[type="email"]', {visible: true});
 
       const emailInput = await loginPage.$('input[type="email"]');
       await emailInput.type('admin@example.com');
