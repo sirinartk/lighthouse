@@ -91,6 +91,10 @@ See `./example-lh-auth-test.js` for an example of how to run Lighthouse in your 
 
 ## Other Approaches
 
+### Chrome DevTools
+
+The Audits panel in Chrome DevTools will never clear your session cookies, so you can log in to the target site and run Lighthouse without being logged out. If local storage or IndexDB is important for your authentication purposes, be sure to uncheck `Clear storage`.
+
 ### Headers
 
 CLI:
