@@ -14,7 +14,10 @@ jest.setTimeout(30000);
  * @return {Promise<LH.Result>}
  */
 async function runLighthouse(url) {
-  const result = await lighthouse(url, {port: DEBUG_PORT});
+  const result = await lighthouse(url, {
+    port: DEBUG_PORT,
+    onlyCategories: ['seo'],
+  });
   return result.lhr;
 }
 
