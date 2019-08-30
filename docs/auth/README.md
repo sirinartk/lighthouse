@@ -36,7 +36,7 @@ We can use Puppeteer - a browser automation tool - to manipulate a setup a sessi
 1. Fill and submit the login form.
 1. Run Lighthouse using the same browser.
 
-To launch Chrome:
+First we launch Chrome:
 ```js
 // This port will be used by Lighthouse later.
 const PORT = 8041;
@@ -45,7 +45,7 @@ const browser = await puppeteer.launch({
 });
 ```
 
-Open the homepage, where the login form is:
+We navigate to the homepage, where the login form is:
 ```js
 const page = await browser.newPage();
 await page.goto('http://localhost:8000');
