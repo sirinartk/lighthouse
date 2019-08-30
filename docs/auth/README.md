@@ -1,19 +1,21 @@
 # Running Lighthouse on Authenticated Pages
 
-Standard usages of Lighthouse audit a page as a new user, with no previous session or storage data. This means that pages behind authenticated access do not work without some additional setup. There a multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach (Puppeteer), but makes mention of all approached briefly at the end.
+Standard usages of Lighthouse processes a page as a new user, with no previous session or storage data. This means that pages requiring authenticated access do not work without some additional setup. There a multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach (Puppeteer), but makes mention of all approached briefly at the end.
 
-## Our Site
+If you just want to view the code, see `./example-lh-auth.js`.
 
-There are two pages on our site:
+## The Example Site
+
+There are two pages on the site:
 
 1. `/` - the homepage
 2. `/dashboard`
 
 The homepage shows the login form, but only to users that are not signed in.
 
-The dashboard shows a secret if the user is logged in, but shows an error if the user is not.
+The dashboard shows a secret to users that are logged in, but shows an error to users that are not.
 
-Our server responds with different HTML for each of these pages and session states, so we have four different pages that we want to assert have passable Lighthouse SEO scores.
+The server responds with different HTML for each of these pages and session states, so there are four different pages that must have passable Lighthouse SEO scores.
 
 You can run this server locally if you like:
 
@@ -27,7 +29,88 @@ yarn start # start the server on http://localhost:8000
 
 ## Puppeteer
 
+We will use Puppeteer to open a Chrome browser and setup our state by filling and submitting a login form. We'll designate a specific port for Chrome to open a debugging session, so that we can pass the same port to Lighthouse.
 
+To launch Chrome:
+```js
+const PORT = 8041;
+const browser = await puppeteer.launch({
+  args: [`--remote-debugging-port=${PORT}`],
+});
+```
+
+Open the homepage, where the login form is:
+```js
+const page = await browser.newPage();
+await page.goto('http://localhost:8000');
+```
+
+Given a login form that looks like this:
+```html
+<form action="/login" method="post">
+  <label>
+    Email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Password:
+    <input type="password" name="password">
+  </label>
+  <input type="submit">
+</form>
+```
+
+We direct Puppeteer to fill and submit it:
+```js
+const emailInput = await page.$('input[type="email"]');
+await emailInput.type('admin@example.com');
+const passwordInput = await page.$('input[type="password"]');
+await passwordInput.type('password');
+const submitInput = await page.$('input[type="submit"]');
+await submitInput.press('Enter');
+await page.waitForNavigation();
+```
+
+At this point, the session that Puppeteer is managing is now logged into our site.
+
+We can close the page we used to login:
+```js
+await page.close();
+```
+
+All that's left to do now is run Lighthouse, using the same port as before:
+```js
+const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
+await browser.close();
+const lhr = result.lhr;
+```
+
+## Puppetter in Your Integration Tests
+
+See `./example-lh-auth-test.js` for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
 
 ## Other Approaches
 
+### Headers
+
+CLI:
+```sh
+lighthouse http://www.example.com --view --extra-headers="{\"Authorization\":\"...\"}"
+# or
+lighthouse http://www.example.com --view --extra-headers=./path/to/secret/headers.json
+```
+
+Node:
+```js
+const result = await lighthouse('http://www.example.com', {
+  extraHeaders: {
+    Authorization: '...',
+  },
+});
+```
+
+You could also set the `Cookie` header, but beware: it will [override any other Cookies you expect to be there](https://github.com/GoogleChrome/lighthouse/pull/9170). A workaround is to use Puppeteer's [page.setCookie](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetcookiecookies).
+
+### Chrome User Profile
+
+TODO: pending #8957.
