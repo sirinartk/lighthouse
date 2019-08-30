@@ -1,6 +1,6 @@
 # Running Lighthouse on Authenticated Pages
 
-Standard usages of Lighthouse processes a page as a new user, with no previous session or storage data. This means that pages requiring authenticated access do not work without some additional setup. There a multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach (Puppeteer), but makes mention of all approached briefly at the end.
+Standard usages of Lighthouse processes a page as a new user, with no previous session or storage data. This means that pages requiring authenticated access do not work without some additional setup. There are multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach (Puppeteer), but makes mention of all approached briefly at the end.
 
 If you just want to view the code, see `./example-lh-auth.js`.
 
@@ -113,4 +113,4 @@ You could also set the `Cookie` header, but beware: it will [override any other 
 
 ### Chrome User Profile
 
-TODO: pending #8957.
+TODO: pending [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
