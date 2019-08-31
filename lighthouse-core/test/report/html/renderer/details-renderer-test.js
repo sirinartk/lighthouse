@@ -409,9 +409,9 @@ describe('DetailsRenderer', () => {
       assert.strictEqual(sourceLocationEl.localName, 'div');
       assert.equal(anchorEl.href, 'https://www.example.com/script.js');
       assert.equal(sourceLocationEl.textContent, '/script.js:11:5(www.example.com)');
-      assert.equal(sourceLocationEl.getAttribute('data-url'), sourceLocation.url);
-      assert.equal(sourceLocationEl.getAttribute('data-line'), sourceLocation.line);
-      assert.equal(sourceLocationEl.getAttribute('data-column'), sourceLocation.column);
+      assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
+      assert.equal(sourceLocationEl.getAttribute('data-source-line'), sourceLocation.line);
+      assert.equal(sourceLocationEl.getAttribute('data-source-column'), sourceLocation.column);
     });
 
     it('renders source-location values that aren\'t network resources', () => {
@@ -434,9 +434,9 @@ describe('DetailsRenderer', () => {
       assert.ok(!anchorEl);
       assert.strictEqual(sourceLocationEl.localName, 'div');
       assert.equal(sourceLocationEl.textContent, 'https://www.example.com/script.js:1:0 (from sourceURL)');
-      assert.equal(sourceLocationEl.getAttribute('data-url'), sourceLocation.url);
-      assert.equal(sourceLocationEl.getAttribute('data-line'), sourceLocation.line);
-      assert.equal(sourceLocationEl.getAttribute('data-column'), sourceLocation.column);
+      assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
+      assert.equal(sourceLocationEl.getAttribute('data-source-line'), sourceLocation.line);
+      assert.equal(sourceLocationEl.getAttribute('data-source-column'), sourceLocation.column);
     });
 
     it('renders text URL values from a string', () => {

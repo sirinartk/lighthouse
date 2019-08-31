@@ -402,10 +402,10 @@ class DetailsRenderer {
     }
 
     element.classList.add('lh-source-location');
-    element.setAttribute('data-url', item.url);
-    // Should pass `line` to `data-line` as zero-indexed, as DevTools expects that for linkifying.
-    element.setAttribute('data-line', item.line.toString());
-    element.setAttribute('data-column', item.column.toString());
+    element.setAttribute('data-source-url', item.url);
+    // DevTools expects zero-indexed lines.
+    element.setAttribute('data-source-line', item.line.toString());
+    element.setAttribute('data-source-column', item.column.toString());
     return element;
   }
 

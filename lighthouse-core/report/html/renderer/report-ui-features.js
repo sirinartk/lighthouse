@@ -283,13 +283,8 @@ class ReportUIFeatures {
     for (const urlItem of urlItems) {
       const datasetUrl = urlItem.dataset.url;
       if (!datasetUrl) continue;
-      try {
-        const isThirdParty = Util.getRootDomain(datasetUrl) !== finalUrlRootDomain;
-        if (!isThirdParty) continue;
-      } catch (err) {
-        // Invalid url (from sourceURL magic comment). Assume 1p.
-        continue;
-      }
+      const isThirdParty = Util.getRootDomain(datasetUrl) !== finalUrlRootDomain;
+      if (!isThirdParty) continue;
 
       const urlRowEl = urlItem.closest('tr');
       if (urlRowEl) {
