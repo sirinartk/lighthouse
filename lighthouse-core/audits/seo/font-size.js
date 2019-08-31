@@ -296,6 +296,7 @@ class FontSize extends Audit {
         (failingTextLength - analyzedFailingTextLength) / visitedTextLength * 100;
 
       tableData.push({
+        // Overrides default `source-location`
         source: {type: 'code', value: 'Add\'l illegible text'},
         selector: '',
         coverage: `${percentageOfUnanalyzedFailingText.toFixed(2)}%`,
@@ -305,6 +306,7 @@ class FontSize extends Audit {
 
     if (percentageOfPassingText > 0) {
       tableData.push({
+        // Overrides default `source-location`
         source: {type: 'code', value: 'Legible text'},
         selector: '',
         coverage: `${percentageOfPassingText.toFixed(2)}%`,
