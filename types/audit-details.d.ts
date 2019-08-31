@@ -104,7 +104,7 @@ declare global {
 
       export type TableItem = {
         debugData?: DebugData;
-        [p: string]: null | string | number | boolean | undefined | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
+        [p: string]: undefined | string | number | boolean | undefined | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
       }
 
       export interface OpportunityColumnHeading {
@@ -167,8 +167,13 @@ declare global {
         nodeLabel?: string;
       }
 
+      /**
+       * A value used within a details object, intended to be displayed as a URL
+       * encoded with line and column info (url:line:column).
+       */
       export interface SourceLocationValue {
         type: 'source-location';
+        /** urls from the network are always valid urls. otherwise, urls come from either a comment or header, and may not be well-formed. */
         url: string;
         /** 'network' when the url is the actual, observed resource url. 'comment' when the url comes from a sourceMapURL comment or X-SourceMap header */
         urlProvider: 'network' | 'comment';

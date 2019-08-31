@@ -58,7 +58,7 @@ class Deprecations extends Audit {
 
     const deprecations = entries.filter(log => log.entry.source === 'deprecation').map(log => {
       // HTML deprecations will have no url and no way to attribute to a specific line.
-      let source = null;
+      let source;
       if (log.entry.url) {
         // JS deprecations will have a stack trace.
         // CSS deprecations only expose a line number.
