@@ -95,6 +95,7 @@ class DetailsRenderer {
 
   /**
    * @param {string} text
+   * @return {HTMLElement}
    */
   renderTextURL(text) {
     const url = text;
