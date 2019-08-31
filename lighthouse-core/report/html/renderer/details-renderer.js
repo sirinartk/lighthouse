@@ -389,7 +389,7 @@ class DetailsRenderer {
       return null;
     }
 
-    // Lines are never shown as zero-indexed.
+    // Lines are shown as one-indexed.
     const line = item.line + 1;
     const column = item.column;
 
