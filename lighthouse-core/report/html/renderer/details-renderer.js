@@ -244,15 +244,15 @@ class DetailsRenderer {
         return this._renderMilliseconds(msValue);
       }
       case 'numeric': {
-        const strValue = value.toString();
+        const strValue = String(value);
         return this._renderNumeric(strValue);
       }
       case 'text': {
-        const strValue = value.toString();
+        const strValue = String(value);
         return this._renderText(strValue);
       }
       case 'thumbnail': {
-        const strValue = value.toString();
+        const strValue = String(value);
         return this._renderThumbnail(strValue);
       }
       case 'timespanMs': {
@@ -260,7 +260,7 @@ class DetailsRenderer {
         return this._renderMilliseconds({value: numValue});
       }
       case 'url': {
-        const strValue = value.toString();
+        const strValue = String(value);
         if (URL_PREFIXES.some(prefix => strValue.startsWith(prefix))) {
           return this.renderTextURL(strValue);
         } else {
@@ -404,8 +404,8 @@ class DetailsRenderer {
     element.classList.add('lh-source-location');
     element.setAttribute('data-source-url', item.url);
     // DevTools expects zero-indexed lines.
-    element.setAttribute('data-source-line', item.line.toString());
-    element.setAttribute('data-source-column', item.column.toString());
+    element.setAttribute('data-source-line', String(item.line));
+    element.setAttribute('data-source-column', String(item.column));
     return element;
   }
 
