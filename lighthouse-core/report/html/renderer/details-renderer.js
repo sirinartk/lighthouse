@@ -244,15 +244,15 @@ class DetailsRenderer {
         return this._renderMilliseconds(msValue);
       }
       case 'numeric': {
-        const strValue = String(value);
+        const strValue = value.toString();
         return this._renderNumeric(strValue);
       }
       case 'text': {
-        const strValue = String(value);
+        const strValue = value.toString();
         return this._renderText(strValue);
       }
       case 'thumbnail': {
-        const strValue = String(value);
+        const strValue = value.toString();
         return this._renderThumbnail(strValue);
       }
       case 'timespanMs': {
@@ -260,7 +260,7 @@ class DetailsRenderer {
         return this._renderMilliseconds({value: numValue});
       }
       case 'url': {
-        const strValue = String(value);
+        const strValue = value.toString();
         if (URL_PREFIXES.some(prefix => strValue.startsWith(prefix))) {
           return this.renderTextURL(strValue);
         } else {
@@ -404,8 +404,8 @@ class DetailsRenderer {
     element.classList.add('lh-source-location');
     element.setAttribute('data-url', item.url);
     // Should pass `line` to `data-line` as zero-indexed, as DevTools expects that for linkifying.
-    element.setAttribute('data-line', String(item.line));
-    element.setAttribute('data-column', String(item.column));
+    element.setAttribute('data-line', item.line.toString());
+    element.setAttribute('data-column', item.column.toString());
     return element;
   }
 
