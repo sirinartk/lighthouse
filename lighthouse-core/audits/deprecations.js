@@ -58,6 +58,7 @@ class Deprecations extends Audit {
 
     const deprecations = entries.filter(log => log.entry.source === 'deprecation').map(log => {
       // HTML deprecations will have no url and no way to attribute to a specific line.
+      /** @type {LH.Audit.Details.SourceLocationValue=} */
       let source;
       if (log.entry.url) {
         // JS deprecations will have a stack trace.
@@ -66,9 +67,9 @@ class Deprecations extends Audit {
         const line = log.entry.lineNumber || 0;
         const column = topCallFrame ? topCallFrame.columnNumber : 0;
         source = {
-          type: /** @type {'source-location'} */('source-location'),
+          type: 'source-location',
           url: log.entry.url,
-          urlProvider: /** @type {'network'} */('network'),
+          urlProvider: 'network',
           line,
           column,
         };
