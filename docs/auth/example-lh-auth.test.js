@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
 const server = require('./server/server.js');
 
-const DEBUG_PORT = 8042;
+const CHROME_DEBUG_PORT = 8042;
 const SERVER_PORT = 8000;
 
 jest.setTimeout(30000);
@@ -15,7 +15,7 @@ jest.setTimeout(30000);
  */
 async function runLighthouse(url) {
   const result = await lighthouse(url, {
-    port: DEBUG_PORT,
+    port: CHROME_DEBUG_PORT,
     onlyCategories: ['seo'],
   });
   return result.lhr;
@@ -30,7 +30,7 @@ describe('my site', () => {
   beforeAll(async () => {
     server.listen(SERVER_PORT);
     browser = await puppeteer.launch({
-      args: [`--remote-debugging-port=${DEBUG_PORT}`],
+      args: [`--remote-debugging-port=${CHROME_DEBUG_PORT}`],
       headless: !process.env.DEBUG,
       slowMo: process.env.DEBUG ? 50 : undefined,
     });
