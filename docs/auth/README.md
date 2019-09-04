@@ -2,7 +2,7 @@
 
 Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work. There are multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach ([Puppeteer](https://pptr.dev)), but mentions other approaches briefly at the end.
 
-If you just want to view the code, see [./example-lh-auth.js](example-lh-auth.js).
+If you just want to view the code, see [example-lh-auth.js](./example-lh-auth.js).
 
 ## The Example Site
 
@@ -17,8 +17,7 @@ The dashboard shows a secret to users that are logged in, but shows an error to 
 
 The server responds with different HTML for each of these pages and session states, so there are four different pages that must have passable Lighthouse SEO scores.
 
-You can run this server locally if you like:
-
+(Optional) To run the server:
 ```sh
 # be in root lighthouse directory
 yarn # install global project deps
@@ -29,7 +28,7 @@ yarn start # start the server on http://localhost:8000
 
 ## Puppeteer
 
-We can use Puppeteer - a browser automation tool - to manipulate a setup a session programatically.
+We can use Puppeteer - a browser automation tool - to programatically setup a session.
 
 1. Launch a new browser.
 1. Navigate to the login page.
@@ -51,7 +50,7 @@ const page = await browser.newPage();
 await page.goto('http://localhost:8000');
 ```
 
-Given a login form that looks like this:
+Given a login form like this:
 ```html
 <form action="/login" method="post">
   <label>
@@ -95,13 +94,13 @@ const lhr = result.lhr;
 ## Puppetter in Your Integration Tests
 
 
-See [./example-lh-auth.test.js](example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
+See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
 
 ## Other Approaches
 
 ### Chrome DevTools
 
-The Audits panel in Chrome DevTools will never clear your session cookies, so you can log in to the target site and run Lighthouse without being logged out. If local storage or IndexDB is important for your authentication purposes, be sure to uncheck `Clear storage`.
+The Audits panel in Chrome DevTools will never clear your session cookies, so you can log in to the target site and run Lighthouse without being logged out. If `localStorage` or `indexedDB` is important for your authentication purposes, be sure to uncheck `Clear storage`.
 
 ### Headers
 
