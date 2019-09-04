@@ -28,14 +28,14 @@ yarn start # start the server on http://localhost:8000
 
 ## Puppeteer
 
-We can use Puppeteer - a browser automation tool - to programatically setup a session.
+Puppeteer - a browser automation tool - can be used to programatically setup a session.
 
 1. Launch a new browser.
 1. Navigate to the login page.
 1. Fill and submit the login form.
 1. Run Lighthouse using the same browser.
 
-First we launch Chrome:
+First, launch Chrome:
 ```js
 // This port will be used by Lighthouse later.
 const PORT = 8041;
@@ -44,7 +44,7 @@ const browser = await puppeteer.launch({
 });
 ```
 
-We navigate to the homepage, where the login form is:
+Navigate to the login form:
 ```js
 const page = await browser.newPage();
 await page.goto('http://localhost:8000');
@@ -65,7 +65,7 @@ Given a login form like this:
 </form>
 ```
 
-We direct Puppeteer to fill and submit it:
+Direct Puppeteer to fill and submit it:
 ```js
 const emailInput = await page.$('input[type="email"]');
 await emailInput.type('admin@example.com');
@@ -76,15 +76,15 @@ await submitInput.press('Enter');
 await page.waitForNavigation();
 ```
 
-At this point, the session that Puppeteer is managing is now logged into our site.
+At this point, the session that Puppeteer is managing is now logged in.
 
-We can close the page we used to login:
+Close the page used to login:
 ```js
 await page.close();
 // The page has been closed, but the browser still has the relevant session.
 ```
 
-Now we run Lighthouse, using the same port as before:
+Now run Lighthouse, using the same port as before:
 ```js
 const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
 await browser.close();
@@ -92,7 +92,6 @@ const lhr = result.lhr;
 ```
 
 ## Puppetter in Your Integration Tests
-
 
 See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
 
