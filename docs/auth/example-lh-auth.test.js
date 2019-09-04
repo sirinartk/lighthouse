@@ -94,9 +94,10 @@ describe('my site', () => {
       await emailInput.type('admin@example.com');
       const passwordInput = await loginPage.$('input[type="password"]');
       await passwordInput.type('password');
-      const submitInput = await loginPage.$('input[type="submit"]');
-      await submitInput.press('Enter');
-      await loginPage.waitForNavigation();
+      await Promise.all([
+        loginPage.$eval('.login-form', form => form.submit()),
+        loginPage.waitForNavigation(),
+      ]);
 
       await loginPage.close();
     });
