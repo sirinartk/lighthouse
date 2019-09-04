@@ -28,7 +28,7 @@ describe('my site', () => {
   let page;
 
   beforeAll(async () => {
-    server.listen(SERVER_PORT);
+    await new Promise(resolve => server.listen(SERVER_PORT, resolve));
     browser = await puppeteer.launch({
       args: [`--remote-debugging-port=${CHROME_DEBUG_PORT}`],
       headless: !process.env.DEBUG,
@@ -38,7 +38,7 @@ describe('my site', () => {
 
   afterAll(async () => {
     await browser.close();
-    server.close();
+    await new Promise(resolve => server.close(resolve));
   });
 
   beforeEach(async () => {
