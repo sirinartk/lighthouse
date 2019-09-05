@@ -15,8 +15,6 @@ The Audits panel in Chrome DevTools will never clear your session cookies, so yo
 CLI:
 ```sh
 lighthouse http://www.example.com --view --extra-headers="{\"Authorization\":\"...\"}"
-# or
-lighthouse http://www.example.com --view --extra-headers=./path/to/secret/headers.json
 ```
 
 Node:
