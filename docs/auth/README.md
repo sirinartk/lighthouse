@@ -1,6 +1,4 @@
-# Running Lighthouse on Authenticated Pages
-
-Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work. There are multiple ways to run Lighthouse on an authenticated page - this document focuses on the most flexible approach ([Puppeteer](https://pptr.dev)), but mentions other approaches briefly at the end.
+# Running Lighthouse on Authenticated Pages with Puppeteer
 
 If you just want to view the code, see [example-lh-auth.js](./example-lh-auth.js).
 
@@ -26,7 +24,7 @@ yarn # install deps related to just this documentation
 yarn start # start the server on http://localhost:8000
 ```
 
-## Puppeteer
+## Process
 
 Puppeteer - a browser automation tool - can be used to programatically setup a session.
 
@@ -94,33 +92,3 @@ const lhr = result.lhr;
 ## Puppetter in Your Integration Tests
 
 See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
-
-## Other Approaches
-
-### Chrome DevTools
-
-The Audits panel in Chrome DevTools will never clear your session cookies, so you can log in to the target site and run Lighthouse without being logged out. If `localStorage` or `indexedDB` is important for your authentication purposes, be sure to uncheck `Clear storage`.
-
-### Headers
-
-CLI:
-```sh
-lighthouse http://www.example.com --view --extra-headers="{\"Authorization\":\"...\"}"
-# or
-lighthouse http://www.example.com --view --extra-headers=./path/to/secret/headers.json
-```
-
-Node:
-```js
-const result = await lighthouse('http://www.example.com', {
-  extraHeaders: {
-    Authorization: '...',
-  },
-});
-```
-
-You could also set the `Cookie` header, but beware: it will [override any other Cookies you expect to be there](https://github.com/GoogleChrome/lighthouse/pull/9170). A workaround is to use Puppeteer's [`page.setCookie`](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetcookiecookies).
-
-### Chrome User Profile
-
-TODO: pending [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
