@@ -160,12 +160,6 @@ describe('my site', () => {
   });
 
   describe('/dashboard logged out', () => {
-    it('lighthouse', async () => {
-      await page.goto('http://localhost:8000/dashboard');
-      const lhr = await runLighthouse(page.url());
-      expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
-    });
-
     it('has no secrets', async () => {
       await page.goto('http://localhost:8000/dashboard');
       expect(await page.content()).not.toContain('secrets');
