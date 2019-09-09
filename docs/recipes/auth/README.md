@@ -69,9 +69,10 @@ const emailInput = await page.$('input[type="email"]');
 await emailInput.type('admin@example.com');
 const passwordInput = await page.$('input[type="password"]');
 await passwordInput.type('password');
-const submitInput = await page.$('input[type="submit"]');
-await submitInput.press('Enter');
-await page.waitForNavigation();
+await Promise.all([
+  page.$eval('.login-form', form => form.submit()),
+  page.waitForNavigation(),
+]);
 ```
 
 At this point, the session that Puppeteer is managing is now logged in.

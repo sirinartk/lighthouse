@@ -17,7 +17,7 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-app.get('/dashboard', loginRequired, (req, res) => {
+app.get('/dashboard', (req, res) => {
   if (req.session.user) {
     res.sendFile('./dashboard.html', { root: PUBLIC_DIR });
   } else {

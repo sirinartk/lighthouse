@@ -16,9 +16,10 @@ async function login(browser) {
   await emailInput.type('admin@example.com');
   const passwordInput = await page.$('input[type="password"]');
   await passwordInput.type('password');
-  const submitInput = await page.$('input[type="submit"]');
-  await submitInput.press('Enter');
-  await page.waitForNavigation();
+  await Promise.all([
+    page.$eval('.login-form', form => form.submit()),
+    page.waitForNavigation(),
+  ]);
 
   await page.close();
 }
