@@ -19,15 +19,15 @@ app.use(session({
 
 app.get('/dashboard', (req, res) => {
   if (req.session.user) {
-    res.sendFile('./dashboard.html', { root: PUBLIC_DIR });
+    res.sendFile('./dashboard.html', {root: PUBLIC_DIR});
   } else {
-    res.status(401).sendFile('./unauthenticated.html', { root: PUBLIC_DIR });
+    res.status(401).sendFile('./unauthenticated.html', {root: PUBLIC_DIR});
   }
 });
 
 app.get('/', (req, res) => {
   if (req.session.user) {
-    res.send('<span>You are logged in. Go to <a href="/dashboard">the dashboard</a>.</span>')
+    res.send('<span>You are logged in. Go to <a href="/dashboard">the dashboard</a>.</span>');
   } else {
     res.send(`
       <form class="login-form" action="/login" method="post">
