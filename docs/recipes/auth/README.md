@@ -76,7 +76,7 @@ await page.waitForNavigation();
 
 At this point, the session that Puppeteer is managing is now logged in.
 
-Close the page used to login:
+Close the page used to log in:
 ```js
 await page.close();
 // The page has been closed, but the browser still has the relevant session.
