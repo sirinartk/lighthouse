@@ -1,15 +1,12 @@
 const createError = require('http-errors');
 const express = require('express');
 const morgan = require('morgan');
-const mustacheExpress = require('mustache-express');
 const session = require('express-session');
 const http = require('http');
+const path = require('path');
+const PUBLIC_DIR = path.join(__dirname, 'public');
 
 const app = express();
-
-app.engine('mustache', mustacheExpress());
-app.set('view engine', 'mustache');
-app.set('views', __dirname + '/views');
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
@@ -20,25 +17,36 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-app.use(function(req, res, next) {
-  res.locals.session = req.session;
-  next();
-});
-
 function loginRequired(req, res, next) {
   if (!req.session.user) {
-    return res.status(401).render('unauthenticated');
+    return res.status(401).sendFile('./unauthenticated.html', { root: PUBLIC_DIR });
   }
 
   next();
 }
 
 app.get('/dashboard', loginRequired, (req, res) => {
-  res.render('dashboard');
+  res.sendFile('./dashboard.html', { root: PUBLIC_DIR });
 });
 
 app.get('/', (req, res) => {
-  res.render('index');
+  if (req.session.user) {
+    res.send('<span>You are logged in. Go to <a href="/dashboard">the dashboard</a>.</span>')
+  } else {
+    res.send(`
+      <form class="login-form" action="/login" method="post">
+        <label>
+          Email:
+          <input type="email" name="email">
+        </label>
+        <label>
+          Password:
+          <input type="password" name="password">
+        </label>
+        <input type="submit">
+      </form> 
+    `);
+  }
 });
 
 app.post('/login', (req, res, next) => {
