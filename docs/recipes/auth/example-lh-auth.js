@@ -5,6 +5,11 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Example script for running Lighthouse on an authenticated page.
+ * See docs/recipes/auth/README.md for more.
+ */
+
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
 

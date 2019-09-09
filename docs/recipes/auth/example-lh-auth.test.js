@@ -5,6 +5,11 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Example Jest tests for demonstrating how to run Lighthouse on an authenticated
+ * page as integration tests. See docs/recipes/auth/README.md for more.
+ */
+
 /** @typedef {import('./node_modules/lighthouse/types/lhr')} LH */
 
 const puppeteer = require('puppeteer');

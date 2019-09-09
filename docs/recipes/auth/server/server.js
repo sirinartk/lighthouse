@@ -5,6 +5,11 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Example Express server for demonstrating how to run Lighthouse on an authenticated
+ * page. See docs/recipes/auth/README.md for more.
+ */
+
 const createError = require('http-errors');
 const express = require('express');
 const morgan = require('morgan');
