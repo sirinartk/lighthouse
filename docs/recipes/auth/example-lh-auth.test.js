@@ -21,6 +21,40 @@ const SERVER_PORT = 8000;
 
 jest.setTimeout(30000);
 
+// Provide a nice way to assert a score for a category.
+// Note, you could just use `expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9)`,
+// but by using a custom matcher a better error report can be generated.
+expect.extend({
+  toHaveLighthouseScoreGreaterThanOrEqual(lhr, category, threshold) {
+    const score = lhr.categories[category].score;
+    const auditsRefsByWeight = [...lhr.categories[category].auditRefs]
+      .filter((auditRef) => auditRef.weight > 0)
+      .sort((a, b) => b.weight - a.weight);
+    const report = auditsRefsByWeight.map((auditRef) => {
+      const audit = lhr.audits[auditRef.id];
+      const status = audit.score === 1 ?
+        this.utils.EXPECTED_COLOR('○') :
+        this.utils.RECEIVED_COLOR('✕');
+      const weight = this.utils.DIM_COLOR(`[weight: ${auditRef.weight}]`);
+      return `\t${status} ${weight} ${audit.id}`;
+    }).join('\n');
+
+    if (score >= threshold) {
+      return {
+        pass: true,
+        message: () =>
+          `expected category ${category} to be < ${threshold}, but got ${score}\n${report}`,
+      };
+    } else {
+      return {
+        pass: false,
+        message: () =>
+          `expected category ${category} to be >= ${threshold}, but got ${score}\n${report}`,
+      };
+    }
+  },
+});
+
 /**
  * @param {string} url
  * @return {Promise<LH.Result>}
@@ -95,7 +129,7 @@ describe('my site', () => {
     it('lighthouse', async () => {
       await page.goto('http://localhost:8000/');
       const lhr = await runLighthouse(page.url());
-      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
+      expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('login form should exist', async () => {
@@ -112,7 +146,16 @@ describe('my site', () => {
       await login(browser);
       await page.goto('http://localhost:8000/');
       const lhr = await runLighthouse(page.url());
-      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
+      expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
+    });
+
+    it('login form should not exist', async () => {
+      await login(browser);
+      await page.goto('http://localhost:8000/');
+      const emailInput = await page.$('input[type="email"]');
+      const passwordInput = await page.$('input[type="password"]');
+      expect(emailInput).toBeFalsy();
+      expect(passwordInput).toBeFalsy();
     });
   });
 
@@ -120,7 +163,7 @@ describe('my site', () => {
     it('lighthouse', async () => {
       await page.goto('http://localhost:8000/dashboard');
       const lhr = await runLighthouse(page.url());
-      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
+      expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('has no secrets', async () => {
@@ -134,7 +177,7 @@ describe('my site', () => {
       await login(browser);
       await page.goto('http://localhost:8000/dashboard');
       const lhr = await runLighthouse(page.url());
-      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
+      expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('has secrets', async () => {
