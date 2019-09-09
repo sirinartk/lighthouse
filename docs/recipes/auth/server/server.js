@@ -17,16 +17,12 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-function loginRequired(req, res, next) {
-  if (!req.session.user) {
-    return res.status(401).sendFile('./unauthenticated.html', { root: PUBLIC_DIR });
-  }
-
-  next();
-}
-
 app.get('/dashboard', loginRequired, (req, res) => {
-  res.sendFile('./dashboard.html', { root: PUBLIC_DIR });
+  if (req.session.user) {
+    res.sendFile('./dashboard.html', { root: PUBLIC_DIR });
+  } else {
+    res.status(401).sendFile('./unauthenticated.html', { root: PUBLIC_DIR });
+  }
 });
 
 app.get('/', (req, res) => {
