@@ -33,6 +33,35 @@ async function runLighthouse(url) {
   return result.lhr;
 }
 
+/**
+ * @param {puppeteer.Browser} browser
+ */
+async function login(browser) {
+  const page = await browser.newPage();
+  await page.goto('http://localhost:8000/');
+  await page.waitForSelector('input[type="email"]', {visible: true});
+
+  const emailInput = await page.$('input[type="email"]');
+  await emailInput.type('admin@example.com');
+  const passwordInput = await page.$('input[type="password"]');
+  await passwordInput.type('password');
+  await Promise.all([
+    page.$eval('.login-form', form => form.submit()),
+    page.waitForNavigation(),
+  ]);
+
+  await page.close();
+}
+
+/**
+ * @param {puppeteer.Browser} browser
+ */
+async function logout(browser) {
+  const page = await browser.newPage();
+  await page.goto('http://localhost:8000/logout');
+  await page.close();
+}
+
 describe('my site', () => {
   /** @type {import('puppeteer').Browser} */
   let browser;
@@ -59,89 +88,59 @@ describe('my site', () => {
 
   afterEach(async () => {
     await page.close();
+    await logout(browser);
   });
 
-  describe('logged out', () => {
-    describe('homepage', () => {
-      beforeEach(async () => {
-        await page.goto('http://localhost:8000/');
-      });
-
-      it('lighthouse', async () => {
-        const lhr = await runLighthouse(page.url());
-        expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
-      });
-
-      it('login form should exist', async () => {
-        const emailInput = await page.$('input[type="email"]');
-        const passwordInput = await page.$('input[type="password"]');
-        expect(emailInput).toBeTruthy();
-        expect(passwordInput).toBeTruthy();
-      });
+  describe('/ logged out', () => {
+    it('lighthouse', async () => {
+      await page.goto('http://localhost:8000/');
+      const lhr = await runLighthouse(page.url());
+      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
     });
 
-    describe('dashboard', () => {
-      beforeEach(async () => {
-        await page.goto('http://localhost:8000/');
-      });
-
-      it('lighthouse', async () => {
-        const lhr = await runLighthouse(page.url());
-        expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
-      });
-
-      it('has no secrets', async () => {
-        expect(await page.content()).not.toContain('secrets');
-      });
+    it('login form should exist', async () => {
+      await page.goto('http://localhost:8000/');
+      const emailInput = await page.$('input[type="email"]');
+      const passwordInput = await page.$('input[type="password"]');
+      expect(emailInput).toBeTruthy();
+      expect(passwordInput).toBeTruthy();
     });
   });
 
-  describe('logged in', () => {
-    beforeEach(async () => {
-      const loginPage = await browser.newPage();
-      await loginPage.goto('http://localhost:8000/');
-      await loginPage.waitForSelector('input[type="email"]', {visible: true});
+  describe('/ logged in', () => {
+    it('lighthouse', async () => {
+      await login(browser);
+      await page.goto('http://localhost:8000/');
+      const lhr = await runLighthouse(page.url());
+      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
+    });
+  });
 
-      const emailInput = await loginPage.$('input[type="email"]');
-      await emailInput.type('admin@example.com');
-      const passwordInput = await loginPage.$('input[type="password"]');
-      await passwordInput.type('password');
-      await Promise.all([
-        loginPage.$eval('.login-form', form => form.submit()),
-        loginPage.waitForNavigation(),
-      ]);
-
-      await loginPage.close();
+  describe('/dashboard logged out', () => {
+    it('lighthouse', async () => {
+      await page.goto('http://localhost:8000/dashboard');
+      const lhr = await runLighthouse(page.url());
+      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
     });
 
-    afterEach(async () => {
-      await page.goto('http://localhost:8000/logout');
+    it('has no secrets', async () => {
+      await page.goto('http://localhost:8000/dashboard');
+      expect(await page.content()).not.toContain('secrets');
+    });
+  });
+
+  describe('/dashboard logged in', () => {
+    it('lighthouse', async () => {
+      await login(browser);
+      await page.goto('http://localhost:8000/dashboard');
+      const lhr = await runLighthouse(page.url());
+      expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
     });
 
-    describe('homepage', () => {
-      beforeEach(async () => {
-        await page.goto('http://localhost:8000/');
-      });
-
-      it('lighthouse', async () => {
-        const lhr = await runLighthouse(page.url());
-        expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
-      });
-    });
-
-    describe('dashboard', () => {
-      beforeEach(async () => {
-        await page.goto('http://localhost:8000/dashboard');
-      });
-
-      it('lighthouse', async () => {
-        const lhr = await runLighthouse(page.url());
-        expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9);
-      });
-
-      it('has secrets', async () => {
-        expect(await page.content()).toContain('secrets');
-      });
+    it('has secrets', async () => {
+      await login(browser);
+      await page.goto('http://localhost:8000/dashboard');
+      expect(await page.content()).toContain('secrets');
     });
   });
 });
