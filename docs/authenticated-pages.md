@@ -1,6 +1,6 @@
 # Running Lighthouse on Authenticated Pages
 
-Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work without additional setup. You have four options for running Lighthouse on pages behind a login:
+Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work without additional setup. You have a few options for running Lighthouse on pages behind a login:
 
 ## Option 1: Script the login with Puppeteer
 
@@ -30,6 +30,13 @@ const result = await lighthouse('http://www.example.com', {
 
 You could also set the `Cookie` header, but beware: it will [override any other Cookies you expect to be there](https://github.com/GoogleChrome/lighthouse/pull/9170). A workaround is to use Puppeteer's [`page.setCookie`](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetcookiecookies).
 
-## Option 4: Reuse a prepared Chrome User Profile
+## Option 4: Open a debug instance of Chrome and manually log in
+
+1. Globally install lighthouse: `npm i -g lighthouse` or `yarn global add lighthouse`. `chrome-debug` is now in your PATH. This binary launches a standalone Chrome instance with an open debugging port.
+1. Run chrome-debug. This logs the debugging port of your Chrome instance.
+1. Navigate to your site and log in.
+1. In a separate terminal, run `lighthouse http://mysite.com --port port-number`, using the port number from chrome-debug.
+
+## Option 5: Reuse a prepared Chrome User Profile
 
 This option is currently under development. Track or join the discussion here: [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
