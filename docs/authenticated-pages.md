@@ -28,6 +28,6 @@ const result = await lighthouse('http://www.example.com', {
 
 You could also set the `Cookie` header, but beware: it will [override any other Cookies you expect to be there](https://github.com/GoogleChrome/lighthouse/pull/9170). A workaround is to use Puppeteer's [`page.setCookie`](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetcookiecookies).
 
-## Chrome User Profile
+## Option 4: Reuse a prepared Chrome User Profile
 
 TODO: pending [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
