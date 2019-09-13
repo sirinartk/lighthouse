@@ -41,6 +41,9 @@ First, launch Chrome:
 const PORT = 8041;
 const browser = await puppeteer.launch({
   args: [`--remote-debugging-port=${PORT}`],
+  // Optional, if you want to see the tests in action.
+  headless: false,
+  slowMo: 50,
 });
 ```
 

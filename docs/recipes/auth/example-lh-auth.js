@@ -40,6 +40,9 @@ async function main() {
   // Direct Puppeteer to open Chrome with a specific debugging port.
   const browser = await puppeteer.launch({
     args: [`--remote-debugging-port=${PORT}`],
+    // Optional, if you want to see the tests in action.
+    headless: false,
+    slowMo: 50,
   });
 
   // Setup the browser session to be logged into our site.
@@ -47,7 +50,7 @@ async function main() {
 
   // Direct Lighthouse to use the same port.
   const result = await lighthouse('http://localhost:8000/dashboard', {port: PORT});
-  # Direct Puppeteer to close the browser as we're done with it.
+  // Direct Puppeteer to close the browser as we're done with it.
   await browser.close();
 
   // Output the result.
