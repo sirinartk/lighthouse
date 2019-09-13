@@ -2,7 +2,7 @@
 
 Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work without additional setup.
 
-## Puppeteer
+## Option 1: Script the login with Puppeteer
 
 [Puppeteer](https://pptr.dev) is the most flexible approach for auditing pages behind authentication with Lighthouse. See [recipes/auth](./recipes/auth) for more.
 
