@@ -1,6 +1,6 @@
 # Running Lighthouse on Authenticated Pages
 
-Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work without additional setup.
+Default runs of Lighthouse load a page as a "new user", with no previous session or storage data. This means that pages requiring authenticated access do not work without additional setup. You have four options for running Lighthouse on pages behind a login:
 
 ## Option 1: Script the login with Puppeteer
 
@@ -8,7 +8,7 @@ Default runs of Lighthouse load a page as a "new user", with no previous session
 
 See [a working demo at /docs/recipes/auth](./recipes/auth).
 
-## Chrome DevTools
+## Option 2: Leverage logged-in state with Chrome DevTools
 
 The Audits panel in Chrome DevTools will never clear your cookies, so you can log in to the target site and then run Lighthouse. If `localStorage` or `indexedDB` is important for your authentication purposes, be sure to uncheck `Clear storage`.
 

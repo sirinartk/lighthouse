@@ -86,8 +86,10 @@ await page.close();
 Now run Lighthouse, using the same port as before:
 ```js
 const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
-await browser.close();
 const lhr = result.lhr;
+
+# Direct Puppeteer to close the browser as we're done with it.
+await browser.close();
 ```
 
 ## Puppetter in Your Integration Tests

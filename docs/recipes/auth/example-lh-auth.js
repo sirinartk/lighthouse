@@ -47,6 +47,7 @@ async function main() {
 
   // Direct Lighthouse to use the same port.
   const result = await lighthouse('http://localhost:8000/dashboard', {port: PORT});
+  # Direct Puppeteer to close the browser as we're done with it.
   await browser.close();
 
   // Output the result.
