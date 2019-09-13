@@ -1,6 +1,8 @@
 # Running Lighthouse on Authenticated Pages with Puppeteer
 
-If you just want to view the code, see [example-lh-auth.js](./example-lh-auth.js).
+If you just want to view the code for using Lighthouse with Puppeteer, see [example-lh-auth.js](./example-lh-auth.js).
+
+See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
 
 ## The Example Site
 
@@ -91,7 +93,3 @@ const lhr = result.lhr;
 # Direct Puppeteer to close the browser as we're done with it.
 await browser.close();
 ```
-
-## Puppetter in Your Integration Tests
-
-See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
