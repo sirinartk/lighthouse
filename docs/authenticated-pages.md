@@ -10,7 +10,7 @@ Default runs of Lighthouse load a page as a "new user", with no previous session
 
 The Audits panel in Chrome DevTools will never clear your session cookies, so you can log in to the target site and run Lighthouse without being logged out. If `localStorage` or `indexedDB` is important for your authentication purposes, be sure to uncheck `Clear storage`.
 
-## Headers
+## Option 3: Pass custom request headers with Lighthouse CLI
 
 CLI:
 ```sh
