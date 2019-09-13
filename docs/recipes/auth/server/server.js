@@ -42,6 +42,7 @@ app.get('/', (req, res) => {
     res.send('<span>You are logged in. Go to <a href="/dashboard">the dashboard</a>.</span>');
   } else {
     res.send(`
+      <h1>Plz login</h1>
       <form class="login-form" action="/login" method="post">
         <label>
           Email:
