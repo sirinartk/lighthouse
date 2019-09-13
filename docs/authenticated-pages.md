@@ -4,7 +4,7 @@ Default runs of Lighthouse load a page as a "new user", with no previous session
 
 ## Option 1: Script the login with Puppeteer
 
-[Puppeteer](https://pptr.dev) is the most flexible approach for auditing pages behind authentication with Lighthouse. 
+[Puppeteer](https://pptr.dev) is the most flexible approach for running Lighthouse on pages requiring authentication. 
 
 See [a working demo at /docs/recipes/auth](./recipes/auth).
 
@@ -32,4 +32,4 @@ You could also set the `Cookie` header, but beware: it will [override any other 
 
 ## Option 4: Reuse a prepared Chrome User Profile
 
-TODO: pending [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
+This option is currently under development. Track or join the discussion here: [#8957](https://github.com/GoogleChrome/lighthouse/issues/8957).
