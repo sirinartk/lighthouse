@@ -14,7 +14,7 @@
 
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
-const server = require('./server/server.js');
+const server = require('../auth/server/server.js');
 
 const CHROME_DEBUG_PORT = 8042;
 const SERVER_PORT = 8000;
