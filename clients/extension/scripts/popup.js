@@ -20,9 +20,6 @@ const VIEWER_URL = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.
 
 const optionsVisibileClass = 'show-options';
 
-/** @type {?string} */
-let siteURL = null;
-
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
  * nothing matches query.
@@ -134,55 +131,57 @@ async function initPopup() {
   logVersion();
   fillDevToolsShortcut();
 
-  chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
-    if (tabs.length === 0 || !tabs[0].url) {
-      return;
-    }
-
-    siteURL = tabs[0].url;
-    const url = new URL(siteURL);
-    if (url.hostname === 'localhost') {
-      generateReportButton.disabled = true;
-      optionsEl.classList.add('disabled');
-      errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
-    } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
-      generateReportButton.disabled = true;
-      optionsEl.classList.add('disabled');
-      errorMessageEl.textContent = `Cannot audit ${url.protocol}// pages.`;
-    }
-  });
-
-  // generate checkboxes from saved settings
-  ExtensionController.loadSettings().then(settings => {
-    generateOptionsList(settings);
-    const selectedDeviceEl = /** @type {HTMLInputElement} */ (
-      find(`.options__device input[value="${settings.device}"]`));
-    selectedDeviceEl.checked = true;
-  });
-
-  const errorMessageEl = /** @type {HTMLButtonElement} */ (find('.errormsg'));
-
-  const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
-  generateReportButton.addEventListener('click', () => {
-    ExtensionController.loadSettings().then(settings => {
-      if (siteURL) {
-        onGenerateReportButtonClick(siteURL, settings);
-      }
-    });
-  });
-
-  // bind View Options button
-  const optionsEl = find('.button--configure');
   const bodyEl = find('body');
-  optionsEl.addEventListener('click', () => {
-    bodyEl.classList.toggle(optionsVisibileClass);
-  });
-
-  // bind Save Options button
+  const optionsEl = find('.button--configure');
+  const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
+  const errorMessageEl = /** @type {HTMLButtonElement} */ (find('.errormsg'));
   const optionsFormEl = find('.options__form');
-  optionsFormEl.addEventListener('change', () => {
-    persistSettings();
-  });
+
+  try {
+    const siteUrl = await new Promise((resolve, reject) => {
+      chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
+        if (tabs.length === 0 || !tabs[0].url) {
+          return;
+        }
+
+        const url = new URL(tabs[0].url);
+        if (url.hostname === 'localhost') {
+          reject('Use DevTools to audit pages on localhost.');
+        } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
+          reject(`Cannot audit ${url.protocol}// pages.`);
+        } else {
+          resolve(url);
+        }
+      });
+    });
+
+    // Generate checkboxes from saved settings.
+    ExtensionController.loadSettings().then(settings => {
+      generateOptionsList(settings);
+      const selectedDeviceEl = /** @type {HTMLInputElement} */ (
+        find(`.options__device input[value="${settings.device}"]`));
+      selectedDeviceEl.checked = true;
+    });
+
+
+    generateReportButton.addEventListener('click', () => {
+      ExtensionController.loadSettings().then(settings => {
+        onGenerateReportButtonClick(siteUrl, settings);
+      });
+    });
+
+    optionsEl.addEventListener('click', () => {
+      bodyEl.classList.toggle(optionsVisibileClass);
+    });
+
+    optionsFormEl.addEventListener('change', () => {
+      persistSettings();
+    });
+  } catch (err) {
+    generateReportButton.disabled = true;
+    optionsEl.classList.add('disabled');
+    errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
+  }
 }
 
 initPopup();
