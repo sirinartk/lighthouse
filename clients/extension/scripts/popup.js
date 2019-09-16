@@ -18,7 +18,7 @@ const ExtensionController = (() => {
 const DEV = !('update_url' in chrome.runtime.getManifest());
 const VIEWER_URL = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io/lighthouse/viewer/';
 
-const subpageVisibleClass = 'subpage--visible';
+const optionsVisibileClass = 'show-options';
 
 /** @type {?string} */
 let siteURL = null;
@@ -113,6 +113,20 @@ function logVersion() {
   });
 }
 
+function persistSettings() {
+  const optionsEl = find('.section--options');
+  // Save settings when options page is closed.
+  const checkboxes = /** @type {NodeListOf<HTMLInputElement>} */
+    (optionsEl.querySelectorAll('.options__categories input:checked'));
+  const selectedCategories = Array.from(checkboxes).map(input => input.value);
+  const device = /** @type {HTMLInputElement} */ (find('input[name="device"]:checked')).value;
+
+  ExtensionController.saveSettings({
+    selectedCategories,
+    device,
+  });
+}
+
 /**
  * Initializes the popup's state and UI elements.
  */
@@ -157,26 +171,15 @@ async function initPopup() {
 
   // bind View Options button
   const generateOptionsEl = find('#configure-options');
-  const optionsEl = find('.options');
+  const bodyEl = find('body');
   generateOptionsEl.addEventListener('click', () => {
-    optionsEl.classList.add(subpageVisibleClass);
+    bodyEl.classList.toggle(optionsVisibileClass);
   });
 
   // bind Save Options button
-  const okButton = find('#ok');
-  okButton.addEventListener('click', () => {
-    // Save settings when options page is closed.
-    const checkboxes = /** @type {NodeListOf<HTMLInputElement>} */
-      (optionsEl.querySelectorAll('.options__categories input:checked'));
-    const selectedCategories = Array.from(checkboxes).map(input => input.value);
-    const device = /** @type {HTMLInputElement} */ (find('input[name="device"]:checked')).value;
-
-    ExtensionController.saveSettings({
-      selectedCategories,
-      device,
-    });
-
-    optionsEl.classList.remove(subpageVisibleClass);
+  const optionsFormEl = find('.options__form');
+  optionsFormEl.addEventListener('change', () => {
+    persistSettings();
   });
 }
 

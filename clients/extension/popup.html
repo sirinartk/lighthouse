@@ -10,19 +10,18 @@ Unless required by applicable law or agreed to in writing, software distributed 
   <meta charset="utf-8">
   <meta name="author" content="Lighthouse Team">
   <meta name="viewport" content="width=device-width">
-  <title>Lighthouse Report</title>
+  <title>Lighthouse</title>
   <link rel="stylesheet" href="styles/lighthouse.css">
 </head>
 <body>
   <main class="main" role="main">
     <div class="section section--run">
       <img src="images/lh_logo.png" class="header__icon" width="75" height="75" alt="Lighthouse Logo">
-      <button class="button button--outlined button--generate" id="generate-report">Generate report</button>
+      <button class="button button--generate" id="generate-report">Generate report</button>
       <button class="button button--configure" id="configure-options">Options</button>
       <div class="errormsg"></div>
     </div>
     <div class="section section--devtools-info">
-      <img src="images/devtools_logo.png" class="header__icon" width="75" height="75" alt="Chrome DevTools Logo">
       <h3 class="devtools-header">Chrome DevTools</h3>
       <span class="devtools-note">
         You can also run Lighthouse via the DevTools Audits panel.
@@ -31,32 +30,36 @@ Unless required by applicable law or agreed to in writing, software distributed 
     </div>
   </main>
 
-  <aside class="options subpage">
+  <aside class="section section--options">
     <h2 class="options__title" hidden>Settings</h2>
 
-    <h2 class="options__title">Categories</h2>
-    <ul class="options__list options__categories">
-      <!-- filled dynamically -->
-    </ul>
+    <form class="options__form">
+      <h3 class="options__title">Categories</h2>
+      <ul class="options__list options__categories">
+        <!-- filled dynamically -->
+      </ul>
 
-    <h2 class="options__title">Device</h2>
-    <ul class="options__list options__device">
-      <label>
-        <input type="radio" name="device" value="mobile"></input>
-        <span>Mobile</span>
-      </label>
-      <label>
-        <input type="radio" name="device" value="desktop"></input>
-        <span>Desktop</span>
-      </label>
-    </ul>
+      <h3 class="options__title">Device</h2>
+      <ul class="options__list options__device">
+        <li>
+          <label>
+            <input type="radio" name="device" value="mobile"></input>
+            <span>Mobile</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="radio" name="device" value="desktop"></input>
+            <span>Desktop</span>
+          </label>
+        </li>
+      </ul>
+    </form>
 
     <div class="psi-notice">
       <img src="images/pagespeed_64dp.png" class="psi-notice__icon" width="20" height="20" alt="PageSpeed Insights">
       <span class="psi-notice__poweredby">powered by PageSpeed Insights</span>
     </div>
-
-    <button class="options__submit button button--ok" id="ok">OK</button>
   </aside>
 
   <script src="scripts/popup-bundle.js"></script>
