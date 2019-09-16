@@ -160,7 +160,7 @@ async function initPopup() {
 
   const errorMessageEl = /** @type {HTMLButtonElement} */ (find('.errormsg'));
 
-  const generateReportButton = /** @type {HTMLButtonElement} */ (find('#generate-report'));
+  const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
   generateReportButton.addEventListener('click', () => {
     ExtensionController.loadSettings().then(settings => {
       if (siteURL) {
@@ -170,7 +170,7 @@ async function initPopup() {
   });
 
   // bind View Options button
-  const generateOptionsEl = find('#configure-options');
+  const generateOptionsEl = find('.button--configure');
   const bodyEl = find('body');
   generateOptionsEl.addEventListener('click', () => {
     bodyEl.classList.toggle(optionsVisibileClass);

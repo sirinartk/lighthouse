@@ -74,8 +74,8 @@ body {
   font-size: 16px;
   border: none;
   color: var(--lh-bg-color);
-  margin: 5px;
-  padding: 6px 12px 6px 12px;
+  margin: 5px auto;
+  padding: 6px 14px 6px 14px;
   border-radius: 13px;
   background-color: var(--lh-blue-color);
 }
@@ -110,16 +110,9 @@ body {
 }
 
 .psi-notice {
-  display: flex;
-  align-items: center;
-}
-
-.psi-notice__icon {
-  margin-right: 5px;
-}
-
-.psi-notice__poweredby {
-  font-size: 10px;
+  font-size: 11px;
+  text-align: center;
+  color: grey;
 }
 
 .options__list {

@@ -17,9 +17,9 @@ Unless required by applicable law or agreed to in writing, software distributed 
   <main class="main" role="main">
     <div class="section section--run">
       <img src="images/lh_logo.png" class="header__icon" width="75" height="75" alt="Lighthouse Logo">
-      <button class="button button--generate" id="generate-report">Generate report</button>
-      <button class="button button--configure" id="configure-options">Options</button>
-      <div class="errormsg"></div>
+      <button class="button button--generate">Generate report</button>
+      <button class="button button--configure">Options</button>
+      <span class="psi-notice">Powered by the PageSpeed Insights API</span>
     </div>
     <div class="section section--devtools-info">
       <h3 class="devtools-header">Chrome DevTools</h3>
@@ -27,6 +27,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
         You can also run Lighthouse via the DevTools Audits panel.
         Shortcut to open DevTools: <span class="devtools-shortcut"><!-- filled dynamically --></span>
       </span>
+      <div class="errormsg"></div>
     </div>
   </main>
 
@@ -55,11 +56,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
         </li>
       </ul>
     </form>
-
-    <div class="psi-notice">
-      <img src="images/pagespeed_64dp.png" class="psi-notice__icon" width="20" height="20" alt="PageSpeed Insights">
-      <span class="psi-notice__poweredby">powered by PageSpeed Insights</span>
-    </div>
   </aside>
 
   <script src="scripts/popup-bundle.js"></script>
