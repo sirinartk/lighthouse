@@ -143,9 +143,11 @@ async function initPopup() {
     const url = new URL(siteURL);
     if (url.hostname === 'localhost') {
       generateReportButton.disabled = true;
+      optionsEl.classList.add('disabled');
       errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
     } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
       generateReportButton.disabled = true;
+      optionsEl.classList.add('disabled');
       errorMessageEl.textContent = `Cannot audit ${url.protocol}// pages.`;
     }
   });
@@ -170,9 +172,9 @@ async function initPopup() {
   });
 
   // bind View Options button
-  const generateOptionsEl = find('.button--configure');
+  const optionsEl = find('.button--configure');
   const bodyEl = find('body');
-  generateOptionsEl.addEventListener('click', () => {
+  optionsEl.addEventListener('click', () => {
     bodyEl.classList.toggle(optionsVisibileClass);
   });
 

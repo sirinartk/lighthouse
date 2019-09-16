@@ -106,7 +106,17 @@ body {
 
 .button--configure {
   position: absolute;
-  right: 0;
+  top: 15px;
+  right: 10px;
+  color: var(--lh-blue-color);
+  cursor: pointer;
+}
+.show-options .button--configure {
+  color: grey;
+}
+.button--configure.disabled {
+  color: grey;
+  cursor: not-allowed;
 }
 
 .psi-notice {
