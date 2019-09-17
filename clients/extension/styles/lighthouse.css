@@ -125,6 +125,11 @@ body {
   color: grey;
 }
 
+.psi-notice a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .options__list {
   padding: 0;
   list-style-type: none;
