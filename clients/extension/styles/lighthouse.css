@@ -108,11 +108,11 @@ body {
   position: absolute;
   top: 15px;
   right: 10px;
-  color: var(--lh-blue-color);
+  color: rgb(71, 71, 71);
   cursor: pointer;
 }
 .show-options .button--configure {
-  color: grey;
+  color: var(--lh-blue-color);
 }
 .button--configure.disabled {
   color: grey;
