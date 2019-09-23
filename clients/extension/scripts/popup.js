@@ -134,7 +134,8 @@ async function initPopup() {
   const bodyEl = find('body');
   const optionsEl = find('.button--configure');
   const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
-  const errorMessageEl = /** @type {HTMLButtonElement} */ (find('.errormsg'));
+  const psiDisclaimerEl = find('.psi-disclaimer');
+  const errorMessageEl = find('.errormsg');
   const optionsFormEl = find('.options__form');
 
   try {
@@ -163,7 +164,6 @@ async function initPopup() {
       selectedDeviceEl.checked = true;
     });
 
-
     generateReportButton.addEventListener('click', () => {
       ExtensionController.loadSettings().then(settings => {
         onGenerateReportButtonClick(siteUrl, settings);
@@ -180,6 +180,7 @@ async function initPopup() {
   } catch (err) {
     generateReportButton.disabled = true;
     optionsEl.classList.add('disabled');
+    psiDisclaimerEl.remove();
     errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
   }
 }
