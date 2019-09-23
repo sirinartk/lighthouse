@@ -15,16 +15,22 @@ The homepage shows the login form, but only to users that are not signed in.
 
 The dashboard shows a secret to users that are logged in, but shows an error to users that are not.
 
-The server responds with different HTML for each of these pages and session states, so there are four different pages that must have passable Lighthouse SEO scores.
+The server responds with different HTML for each of these pages and session states.
 
 (Optional) To run the server:
 ```sh
 # be in root lighthouse directory
 yarn # install global project deps
 cd docs/auth
-yarn # install deps related to just this documentation
+yarn # install deps related to just this recipe
 yarn start # start the server on http://localhost:8000
 ```
+
+Now that the server is started, let's login with Puppeteer and then run Lighthouse:
+```sh
+node example-lh-auth.js
+```
+What does this do?  Read on....
 
 ## Process
 
@@ -37,7 +43,7 @@ Puppeteer - a browser automation tool - can be used to programatically setup a s
 
 First, launch Chrome:
 ```js
-// This port will be used by Lighthouse later.
+// This port will be used by Lighthouse later. The specific port is arbitrary.
 const PORT = 8041;
 const browser = await puppeteer.launch({
   args: [`--remote-debugging-port=${PORT}`],
@@ -90,9 +96,18 @@ await page.close();
 
 Now run Lighthouse, using the same port as before:
 ```js
-const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
+// The local server is running on port 8000.
+const url = 'http://localhost:8000/dashboard';
+// Direct Lighthouse to use the same port.
+const result = await lighthouse(url, { port: PORT });
 const lhr = result.lhr;
 
-# Direct Puppeteer to close the browser as we're done with it.
+// Direct Puppeteer to close the browser - we're done with it.
 await browser.close();
+```
+
+All of the above is done in the example script. To run:
+```sh
+# make sure server is running (see beginning of recipe) ...
+node example-lh-auth.js # login via puppeteer and run lighthouse
 ```

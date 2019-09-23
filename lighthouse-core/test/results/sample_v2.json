@@ -5,7 +5,7 @@
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
     "benchmarkIndex": 1000
   },
-  "lighthouseVersion": "5.2.0",
+  "lighthouseVersion": "5.4.0",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -596,7 +596,7 @@
         "headings": [
           {
             "key": "value",
-            "itemType": "code",
+            "itemType": "text",
             "text": "Deprecation / Warning"
           },
           {
@@ -1569,7 +1569,7 @@
     },
     "aria-required-children": {
       "id": "aria-required-children",
-      "title": "Elements with `[role]` that require specific children `[role]`s, are present",
+      "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
       "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more](https://web.dev/aria-required-children/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
