@@ -131,13 +131,18 @@ body {
   text-decoration: none;
 }
 
+.section--options label {
+  display: flex;
+  align-items: center;
+}
+
 .section--options label span {
-  /* font-size: 14px; */
+  font-size: 14px;
 }
 
 .section--options input {
-  margin: 0 3px 0 0;
-  vertical-align: middle;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .options__list {
