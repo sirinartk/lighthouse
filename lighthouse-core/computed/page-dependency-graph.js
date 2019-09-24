@@ -258,6 +258,7 @@ class PageDependencyGraph {
             break;
 
           case 'EvaluateScript':
+            addDependencyOnFrame(node, evt.args.data.frame);
             // @ts-ignore - 'EvaluateScript' event means argsUrl is defined.
             addDependencyOnUrl(node, argsUrl);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
@@ -275,16 +276,19 @@ class PageDependencyGraph {
 
           case 'FunctionCall':
           case 'v8.compile':
+            addDependencyOnFrame(node, evt.args.data.frame);
             // @ts-ignore - events mean argsUrl is defined.
             addDependencyOnUrl(node, argsUrl);
             break;
 
           case 'ParseAuthorStyleSheet':
+            addDependencyOnFrame(node, evt.args.data.frame);
             // @ts-ignore - 'ParseAuthorStyleSheet' event means styleSheetUrl is defined.
             addDependencyOnUrl(node, evt.args.data.styleSheetUrl);
             break;
 
           case 'ResourceSendRequest':
+            addDependencyOnFrame(node, evt.args.data.frame);
             // @ts-ignore - 'ResourceSendRequest' event means requestId is defined.
             addDependentNetworkRequest(node, evt.args.data.requestId);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
