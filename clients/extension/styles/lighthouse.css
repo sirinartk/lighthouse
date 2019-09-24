@@ -21,6 +21,7 @@
 :root {
   --lh-blue-color: #0535C1;
   --lh-bg-color: white;
+  --font-size: 14px;
 }
 
 * {
@@ -38,6 +39,8 @@ html, body {
 
 body {
   padding: 16px;
+  font-size: var(--font-size);
+  line-height: 18px;
 }
 
 .header {
@@ -47,7 +50,7 @@ body {
 }
 
 .header__icon {
-  margin: 2px auto 10px;
+  margin: 2px auto 0;
 }
 
 .errormsg {
@@ -55,6 +58,7 @@ body {
   margin: 0 5px;
   color: var(--lh-blue-color);
   font-weight: bold;
+  text-align: center;
 }
 .errormsg:empty {
   display: none;
@@ -72,10 +76,10 @@ body {
   font-family: 'Roboto', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--font-size);
   border: none;
   color: var(--lh-bg-color);
-  margin: 5px auto;
+  margin: 8px auto;
   padding: 6px 14px 6px 14px;
   border-radius: 13px;
   background-color: var(--lh-blue-color);
@@ -92,7 +96,9 @@ body {
 }
 
 .devtools-header {
-  font-size: 14px;
+  font-size: var(--font-size);
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .devtools-note {
@@ -121,7 +127,7 @@ body {
 }
 
 .psi-disclaimer {
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
   color: grey;
 }
@@ -131,13 +137,13 @@ body {
   text-decoration: none;
 }
 
+.options__title {
+  font-size: var(--font-size);
+}
+
 .section--options label {
   display: flex;
   align-items: center;
-}
-
-.section--options label span {
-  font-size: 14px;
 }
 
 .section--options input {
