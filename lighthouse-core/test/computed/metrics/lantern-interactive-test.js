@@ -10,8 +10,8 @@ const assert = require('assert');
 
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-const iframeTrace = require('../../fixtures/traces/iframe.trace.json');
-const iframeDevtoolsLog = require('../../fixtures/traces/iframe.devtoolslog.json');
+const iframeTrace = require('../../fixtures/traces/iframe-m79.trace.json');
+const iframeDevtoolsLog = require('../../fixtures/traces/iframe-m79.devtoolslog.json');
 
 /* eslint-env jest */
 
@@ -39,7 +39,7 @@ describe('Metrics: Lantern TTI', () => {
     const result = await LanternInteractive.request({
       trace: iframeTrace,
       devtoolsLog: iframeDevtoolsLog,
-      settings
+      settings,
     }, context);
 
     expect({

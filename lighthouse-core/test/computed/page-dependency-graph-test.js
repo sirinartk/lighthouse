@@ -111,7 +111,8 @@ describe('PageDependencyGraph computed artifact:', () => {
       const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput([
         {...createRequest(1, 'urlA'), documentURL: 'urlA', frameId: 'A'},
         {...createRequest(2, 'urlB'), documentURL: 'urlA', frameId: 'A'},
-        {...createRequest(3, 'urlC'), documentURL: 'urlC', frameId: 'C', resourceType: NetworkRequest.TYPES.XHR},
+        {...createRequest(3, 'urlC'), documentURL: 'urlC', frameId: 'C',
+          resourceType: NetworkRequest.TYPES.XHR},
         {...createRequest(4, 'urlD'), documentURL: 'urlD', frameId: 'D'},
         {...createRequest(4, 'urlE'), documentURL: 'urlE', frameId: undefined},
         {...createRequest(4, 'urlF'), documentURL: 'urlF', frameId: 'collision'},
