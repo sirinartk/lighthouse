@@ -19,9 +19,10 @@
 }
 
 :root {
-  --lh-blue-color: #0535C1;
-  --lh-bg-color: white;
+  --color-bg: white;
+  --color-blue: #0535C1;
   --font-size: 14px;
+  --report-font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -32,13 +33,14 @@ html, body {
   padding: 0;
   margin: 0;
   width: 270px;
-  background-color: var(--lh-bg-color);
+  background-color: var(--color-bg);
   color: #212121;
   user-select: none;
 }
 
 body {
   padding: 16px;
+  font-family: var(--report-font-family);
   font-size: var(--font-size);
   line-height: 18px;
 }
@@ -56,7 +58,7 @@ body {
 .errormsg {
   padding: 5px;
   margin: 0 5px;
-  color: var(--lh-blue-color);
+  color: var(--color-blue);
   font-weight: bold;
   text-align: center;
 }
@@ -78,11 +80,11 @@ body {
   font-weight: 500;
   font-size: var(--font-size);
   border: none;
-  color: var(--lh-bg-color);
+  color: var(--color-bg);
   margin: 8px auto;
   padding: 6px 14px 6px 14px;
   border-radius: 13px;
-  background-color: var(--lh-blue-color);
+  background-color: var(--color-blue);
 }
 
 .section {
@@ -118,7 +120,7 @@ body {
   cursor: pointer;
 }
 .show-options .button--configure {
-  color: var(--lh-blue-color);
+  color: var(--color-blue);
 }
 .button--configure.disabled {
   color: grey;
@@ -138,6 +140,7 @@ body {
 
 .options__title {
   font-size: var(--font-size);
+  font-weight: 500;
 }
 
 .section--options label {
