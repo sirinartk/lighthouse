@@ -59,8 +59,12 @@ class PageDependencyGraph {
   static getNetworkNodeOutput(networkRecords) {
     /** @type {Array<NetworkNode>} */
     const nodes = [];
+    /** @type {Map<string, NetworkNode>} */
     const idToNodeMap = new Map();
+    /** @type {Map<string, Array<NetworkNode>>} */
     const urlToNodeMap = new Map();
+    /** @type {Map<string, NetworkNode|false>} */
+    const frameIdToNodeMap = new Map();
 
     networkRecords.forEach(record => {
       if (IGNORED_MIME_TYPES_REGEX.test(record.mimeType)) return;
@@ -76,14 +80,22 @@ class PageDependencyGraph {
       const node = new NetworkNode(record);
       nodes.push(node);
 
-      const list = urlToNodeMap.get(record.url) || [];
-      list.push(node);
+      const urlList = urlToNodeMap.get(record.url) || [];
+      urlList.push(node);
 
       idToNodeMap.set(record.requestId, node);
-      urlToNodeMap.set(record.url, list);
+      urlToNodeMap.set(record.url, urlList);
+
+      if (record.frameId &&
+          record.resourceType === NetworkRequest.TYPES.Document &&
+          record.documentURL === record.url) {
+        // If there's ever any ambiguity, permanently set the value to `false` to avoid loops in the graph.
+        const value = frameIdToNodeMap.has(record.frameId) ? false : node;
+        frameIdToNodeMap.set(record.frameId, value);
+      }
     });
 
-    return {nodes, idToNodeMap, urlToNodeMap};
+    return {nodes, idToNodeMap, urlToNodeMap, frameIdToNodeMap};
   }
 
   /**
@@ -178,6 +190,17 @@ class PageDependencyGraph {
       cpuNode.addDependent(networkNode);
     }
 
+    /** @param {CPUNode} cpuNode @param {string|undefined} frameId */
+    function addDependencyOnFrame(cpuNode, frameId) {
+      if (!frameId) return;
+      const networkNode = networkNodeOutput.frameIdToNodeMap.get(frameId);
+      if (!networkNode ||
+          // Ignore all network nodes that started after this CPU task started
+          // A network request that started after could not possibly be required this task
+          networkNode.startTime >= cpuNode.startTime) return;
+      cpuNode.addDependency(networkNode);
+    }
+
     /** @param {CPUNode} cpuNode @param {string} url */
     function addDependencyOnUrl(cpuNode, url) {
       if (!url) return;
@@ -230,6 +253,7 @@ class PageDependencyGraph {
 
           case 'InvalidateLayout':
           case 'ScheduleStyleRecalculation':
+            addDependencyOnFrame(node, evt.args.data.frame);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
 
@@ -369,4 +393,5 @@ module.exports = makeComputedArtifact(PageDependencyGraph);
  * @property {Array<NetworkNode>} nodes
  * @property {Map<string, NetworkNode>} idToNodeMap
  * @property {Map<string, Array<NetworkNode>>} urlToNodeMap
+ * @property {Map<string, NetworkNode|false>} frameIdToNodeMap
  */
