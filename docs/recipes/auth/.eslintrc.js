@@ -5,9 +5,14 @@
  */
 'use strict';
 
-/**
- * Config file for running the OOPIF tests
- */
 module.exports = {
-  extends: 'lighthouse:default',
+  extends: '../../../.eslintrc.js',
+  env: {
+    jest: true,
+  },
+  rules: {
+    'new-cap': 0,
+    'no-console': 0,
+    'no-unused-vars': 0,
+  },
 };
