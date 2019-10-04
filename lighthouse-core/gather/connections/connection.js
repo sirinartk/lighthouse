@@ -112,7 +112,7 @@ class Connection {
     // Responses to commands carry "id" property, while events do not.
     if (!('id' in object)) {
       log.formatProtocol('<= event',
-      {method: object.method, params: object.params}, 'verbose');
+          {method: object.method, params: object.params}, 'verbose');
       this.emitProtocolEvent(object);
       return;
     }
