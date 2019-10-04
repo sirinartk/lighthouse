@@ -62,11 +62,8 @@ class Connection {
 
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
-    const message = {id, method, params};
-    // @ts-ignore
-    if (sessionId) message.sessionId = sessionId;
-    const messageJson = JSON.stringify(message);
-    this.sendRawMessage(messageJson);
+    const message = JSON.stringify({id, sessionId, method, params});
+    this.sendRawMessage(message);
 
     return new Promise(resolve => {
       this._callbacks.set(id, {method, resolve});
