@@ -45,7 +45,7 @@ class OptimizedImages extends Gatherer {
     /** @type {Set<string>} */
     const seenUrls = new Set();
     return networkRecords.reduce((prev, record) => {
-      // Skip records that we've seen before, never finished, or came from OOPIFs.
+      // Skip records that we've seen before, never finished, or came from child targets.
       if (seenUrls.has(record.url) || !record.finished || record.sessionId) {
         return prev;
       }

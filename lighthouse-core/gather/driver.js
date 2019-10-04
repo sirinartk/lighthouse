@@ -69,21 +69,8 @@ class Driver {
      */
     this._monitoredUrl = null;
 
-    /**
-     * Used for sending messages to subtargets. Each message needs a unique ID even if we don't bother
-     * reading back the result of each command.
-     *
-     * @type {number}
-     * @private
-     */
-    this._targetProxyMessageId = 0;
-
     this.on('Target.attachedToTarget', event => {
-      this._handleTargetAttached(event, []).catch(this._handleEventError);
-    });
-
-    this.on('Target.receivedMessageFromTarget', event => {
-      this._handleReceivedMessageFromTarget(event, []).catch(this._handleEventError);
+      this._handleTargetAttached(event).catch(this._handleEventError);
     });
 
     // We use isolated execution contexts for `evaluateAsync` that can be destroyed through navigation
@@ -301,96 +288,31 @@ class Driver {
   }
 
   /**
-   * @param {LH.Crdp.Target.ReceivedMessageFromTargetEvent} event
-   * @param {string[]} parentSessionIds The list of session ids of the parents from youngest to oldest.
-   */
-  async _handleReceivedMessageFromTarget(event, parentSessionIds) {
-    const {targetId, sessionId, message} = event;
-    /** @type {LH.Protocol.RawMessage} */
-    const protocolMessage = JSON.parse(message);
-
-    // Message was a response to some command, not an event, so we'll ignore it.
-    if ('id' in protocolMessage) return;
-
-    // We receive messages from the outermost subtarget which wraps the messages from the inner subtargets.
-    // We are recursively processing them from outside in, so build the list of parentSessionIds accordingly.
-    const sessionIdPath = [sessionId, ...parentSessionIds];
-
-    if (protocolMessage.method === 'Target.receivedMessageFromTarget') {
-      // Unravel any messages from subtargets by recursively processing
-      await this._handleReceivedMessageFromTarget(protocolMessage.params, sessionIdPath);
-    }
-
-    if (protocolMessage.method === 'Target.attachedToTarget') {
-      // Process any attachedToTarget messages from subtargets
-      await this._handleTargetAttached(protocolMessage.params, sessionIdPath);
-    }
-
-    if (protocolMessage.method.startsWith('Network')) {
-      this._handleProtocolEvent({...protocolMessage, source: {targetId, sessionId}});
-    }
-  }
-
-  /**
    * @param {LH.Crdp.Target.AttachedToTargetEvent} event
-   * @param {string[]} parentSessionIds The list of session ids of the parents from youngest to oldest.
    */
-  async _handleTargetAttached(event, parentSessionIds) {
-    const sessionIdPath = [event.sessionId, ...parentSessionIds];
-
+  async _handleTargetAttached(event) {
     // We're only interested in network requests from iframes for now as those are "part of the page".
     // If it's not an iframe, just resume it and move on.
     if (event.targetInfo.type !== 'iframe') {
       // We suspended the target when we auto-attached, so make sure it goes back to being normal.
-      await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
+      await this._innerSendCommand('Runtime.runIfWaitingForDebugger', event.sessionId);
       return;
     }
 
     // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
     // We want to receive information about network requests from iframes, so enable the Network domain.
-    await this.sendMessageToTarget(sessionIdPath, 'Network.enable');
+    await this._innerSendCommand('Network.enable', event.sessionId);
+
     // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
-    await this.sendMessageToTarget(sessionIdPath, 'Target.setAutoAttach', {
+    await this._innerSendCommand('Target.setAutoAttach', event.sessionId, {
       autoAttach: true,
+      flatten: true,
       // Pause targets on startup so we don't miss anything
       waitForDebuggerOnStart: true,
     });
 
     // We suspended the target when we auto-attached, so make sure it goes back to being normal.
-    await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
-  }
-
-  /**
-   * Send protocol commands to a subtarget, wraps the message in as many `Target.sendMessageToTarget`
-   * commands as necessary.
-   *
-   * @template {keyof LH.CrdpCommands} C
-   * @param {string[]} sessionIdPath List of session ids to send to, from youngest-oldest/inside-out.
-   * @param {C} method
-   * @param {LH.CrdpCommands[C]['paramsType']} params
-   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
-   */
-  sendMessageToTarget(sessionIdPath, method, ...params) {
-    this._targetProxyMessageId++;
-    /** @type {LH.Crdp.Target.SendMessageToTargetRequest} */
-    let payload = {
-      sessionId: sessionIdPath[0],
-      message: JSON.stringify({id: this._targetProxyMessageId, method, params: params[0]}),
-    };
-
-    for (const sessionId of sessionIdPath.slice(1)) {
-      this._targetProxyMessageId++;
-      payload = {
-        sessionId,
-        message: JSON.stringify({
-          id: this._targetProxyMessageId,
-          method: 'Target.sendMessageToTarget',
-          params: payload,
-        }),
-      };
-    }
-
-    return this.sendCommand('Target.sendMessageToTarget', payload);
+    await this._innerSendCommand('Runtime.runIfWaitingForDebugger', event.sessionId);
   }
 
   /**
@@ -413,7 +335,37 @@ class Driver {
         reject(err);
       }), timeout);
       try {
-        const result = await this._innerSendCommand(method, ...params);
+        const result = await this._innerSendCommand(method, undefined, ...params);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      } finally {
+        clearTimeout(asyncTimeout);
+      }
+    });
+  }
+
+  /**
+   * Same as `sendCommand`, but for a specific session.
+   * @template {keyof LH.CrdpCommands} C
+   * @param {C} method
+   * @param {string} sessionId
+   * @param {LH.CrdpCommands[C]['paramsType']} params
+   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
+   */
+  sendCommandToSession(method, sessionId, ...params) {
+    const timeout = this._nextProtocolTimeout;
+    this._nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
+    return new Promise(async (resolve, reject) => {
+      const asyncTimeout = setTimeout((() => {
+        const err = new LHError(
+          LHError.errors.PROTOCOL_TIMEOUT,
+          {protocolMethod: method}
+        );
+        reject(err);
+      }), timeout);
+      try {
+        const result = await this._innerSendCommand(method, sessionId, ...params);
         resolve(result);
       } catch (err) {
         reject(err);
@@ -428,18 +380,20 @@ class Driver {
    * @private
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
+   * @param {string=} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  _innerSendCommand(method, ...params) {
+  _innerSendCommand(method, sessionId, ...params) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
-    if (domainCommand) {
+    // TODO: store domain state for each session.
+    if (domainCommand && !sessionId) {
       const enable = domainCommand[2] === 'enable';
       if (!this._shouldToggleDomain(domainCommand[1], enable)) {
         return Promise.resolve();
       }
     }
-    return this._connection.sendCommand(method, ...params);
+    return this._connection.sendCommand(method, sessionId, ...params);
   }
 
   /**
@@ -1129,6 +1083,7 @@ class Driver {
 
     // Enable auto-attaching to subtargets so we receive iframe information
     await this.sendCommand('Target.setAutoAttach', {
+      flatten: true,
       autoAttach: true,
       // Pause targets on startup so we don't miss anything
       waitForDebuggerOnStart: true,
@@ -1138,7 +1093,7 @@ class Driver {
     await this.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
     await this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
     // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413.
-    const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', {url});
+    const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', undefined, {url});
 
     if (waitForNavigated) {
       await this._waitForFrameNavigated();

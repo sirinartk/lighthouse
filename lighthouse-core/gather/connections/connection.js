@@ -52,17 +52,21 @@ class Connection {
    * Call protocol methods
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
+   * @param {string=} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} paramArgs,
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendCommand(method, ...paramArgs) {
+  sendCommand(method, sessionId, ...paramArgs) {
     // Reify params since we need it as a property so can't just spread again.
     const params = paramArgs.length ? paramArgs[0] : undefined;
 
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
-    const message = JSON.stringify({id, method, params});
-    this.sendRawMessage(message);
+    const message = {id, method, params};
+    // @ts-ignore
+    if (sessionId) message.sessionId = sessionId;
+    const messageJson = JSON.stringify(message);
+    this.sendRawMessage(messageJson);
 
     return new Promise(resolve => {
       this._callbacks.set(id, {method, resolve});
@@ -108,7 +112,7 @@ class Connection {
     // Responses to commands carry "id" property, while events do not.
     if (!('id' in object)) {
       log.formatProtocol('<= event',
-          {method: object.method, params: object.params}, 'verbose');
+      {method: object.method, params: object.params}, 'verbose');
       this.emitProtocolEvent(object);
       return;
     }
@@ -117,7 +121,7 @@ class Connection {
     if (callback) {
       this._callbacks.delete(object.id);
 
-      return callback.resolve(Promise.resolve().then(_ => {
+      callback.resolve(Promise.resolve().then(_ => {
         if (object.error) {
           log.formatProtocol('method <= browser ERR', {method: callback.method}, 'error');
           throw LHError.fromProtocolMessage(callback.method, object.error);
