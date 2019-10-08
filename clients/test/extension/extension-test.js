@@ -18,7 +18,7 @@ const config = require(path.resolve(__dirname,
 
 const getAuditsOfCategory = category => config.categories[category].auditRefs;
 
-describe('Lighthouse chrome extension', function() {
+describe.skip('Lighthouse chrome extension', function() {
   // eslint-disable-next-line no-console
   console.log('\n✨ Be sure to have recently run this: yarn build-extension');
 
