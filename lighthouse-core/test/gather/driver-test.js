@@ -198,7 +198,7 @@ describe('.evaluateAsync', () => {
 
   it('uses a high default timeout', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
-    .mockResponse('Runtime.evaluate', {result: {value: 2}}, 65000);
+      .mockResponse('Runtime.evaluate', {result: {value: 2}}, 65000);
 
     const evaluatePromise = makePromiseInspectable(driver.evaluateAsync('1 + 1'));
     jest.advanceTimersByTime(30000);
@@ -213,7 +213,7 @@ describe('.evaluateAsync', () => {
 
   it('uses the specific timeout given', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
-    .mockResponse('Runtime.evaluate', {result: {value: 2}}, 10000);
+      .mockResponse('Runtime.evaluate', {result: {value: 2}}, 10000);
 
     driver.setNextProtocolTimeout(5000);
     const evaluatePromise = makePromiseInspectable(driver.evaluateAsync('1 + 1'));
@@ -343,6 +343,7 @@ describe('.setExtraHTTPHeaders', () => {
 
     expect(connectionStub.sendCommand).toHaveBeenCalledWith(
       'Network.setExtraHTTPHeaders',
+      undefined,
       expect.anything()
     );
   });
@@ -873,9 +874,9 @@ describe('.goOnline', () => {
 describe('Multi-target management', () => {
   it('enables the Network domain for iframes', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Target.sendMessageToTarget', {})
-      .mockResponse('Target.sendMessageToTarget', {})
-      .mockResponse('Target.sendMessageToTarget', {});
+      .mockResponseToSession('Network.enable', 123, {})
+      .mockResponseToSession('Target.setAutoAttach', 123, {})
+      .mockResponseToSession('Runtime.runIfWaitingForDebugger', 123, {});
 
     driver._eventEmitter.emit('Target.attachedToTarget', {
       sessionId: 123,
@@ -883,63 +884,11 @@ describe('Multi-target management', () => {
     });
     await flushAllTimersAndMicrotasks();
 
-    const sendMessageArgs = connectionStub.sendCommand
-      .findInvocation('Target.sendMessageToTarget');
-    expect(sendMessageArgs).toEqual({
-      message: '{"id":1,"method":"Network.enable"}',
-      sessionId: 123,
-    });
-  });
-
-  it('enables the Network domain for iframes of iframes of iframes', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Target.sendMessageToTarget', {})
-      .mockResponse('Target.sendMessageToTarget', {})
-      .mockResponse('Target.sendMessageToTarget', {});
-
-    driver._eventEmitter.emit('Target.receivedMessageFromTarget', {
-      sessionId: 'Outer',
-      message: JSON.stringify({
-        method: 'Target.receivedMessageFromTarget',
-        params: {
-          sessionId: 'Middle',
-          message: JSON.stringify({
-            method: 'Target.attachedToTarget',
-            params: {
-              sessionId: 'Inner',
-              targetInfo: {type: 'iframe'},
-            },
-          }),
-        },
-      }),
-    });
-
-    await flushAllTimersAndMicrotasks();
-
-    const sendMessageArgs = connectionStub.sendCommand
-      .findInvocation('Target.sendMessageToTarget');
-    const stringified = `{
-      "id": 3,
-      "method": "Target.sendMessageToTarget",
-      "params": {
-        "sessionId": "Middle",
-        "message": "{
-          \\"id\\": 2,
-          \\"method\\": \\"Target.sendMessageToTarget\\",
-          \\"params\\": {
-            \\"sessionId\\": \\"Inner\\",
-            \\"message\\":\\ "{
-              \\\\\\"id\\\\\\":1,
-              \\\\\\"method\\\\\\":\\\\\\"Network.enable\\\\\\"
-            }\\"
-          }}"
-        }
-      }`.replace(/\s+/g, '');
-
-    expect(sendMessageArgs).toEqual({
-      message: stringified,
-      sessionId: 'Outer',
-    });
+    expect(connectionStub.sendCommand).toHaveBeenNthCalledWith(1, 'Network.enable', 123);
+    expect(connectionStub.sendCommand)
+      .toHaveBeenNthCalledWith(2, 'Target.setAutoAttach', 123, expect.anything());
+    expect(connectionStub.sendCommand)
+      .toHaveBeenNthCalledWith(3, 'Runtime.runIfWaitingForDebugger', 123);
   });
 
   it('ignores other target types, but still resumes them', async () => {
@@ -952,12 +901,7 @@ describe('Multi-target management', () => {
     });
     await flushAllTimersAndMicrotasks();
 
-
-    const sendMessageArgs = connectionStub.sendCommand
-      .findInvocation('Target.sendMessageToTarget');
-    expect(sendMessageArgs).toEqual({
-      message: JSON.stringify({id: 1, method: 'Runtime.runIfWaitingForDebugger'}),
-      sessionId: 'SW1',
-    });
+    expect(connectionStub.sendCommand)
+      .toHaveBeenCalledWith('Runtime.runIfWaitingForDebugger', 'SW1');
   });
 });
