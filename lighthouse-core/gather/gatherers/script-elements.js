@@ -62,11 +62,6 @@ class ScriptElements extends Gatherer {
       if (script.content) script.requestId = mainResource.requestId;
     }
 
-    // console.log('CONNOR DEBUG networkRecords',
-    //   JSON.stringify(loadData.networkRecords
-    //     .filter(r => r.sessionId)
-    //     .map(r => ({requestId: r.requestId, sessionId: r.sessionId, url: r.url})), null, 2));
-
     const scriptRecords = loadData.networkRecords
       // Ignore records from OOPIFs
       .filter(record => !record.sessionId)
