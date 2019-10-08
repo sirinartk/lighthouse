@@ -158,11 +158,6 @@ body {
   list-style-type: none;
 }
 
-/* .options input:checked + span {
-  color: #2962FF;
-  font-weight: bold;
-} */
-
 /* Visibility stuff */
 
 .section--options {
