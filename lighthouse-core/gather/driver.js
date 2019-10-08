@@ -320,36 +320,7 @@ class Driver {
    * To configure the timeout for the next call, use 'setNextProtocolTimeout'.
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
-   * @param {LH.CrdpCommands[C]['paramsType']} params
-   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
-   */
-  sendCommand(method, ...params) {
-    const timeout = this._nextProtocolTimeout;
-    this._nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
-    return new Promise(async (resolve, reject) => {
-      const asyncTimeout = setTimeout((() => {
-        const err = new LHError(
-          LHError.errors.PROTOCOL_TIMEOUT,
-          {protocolMethod: method}
-        );
-        reject(err);
-      }), timeout);
-      try {
-        const result = await this._innerSendCommand(method, undefined, ...params);
-        resolve(result);
-      } catch (err) {
-        reject(err);
-      } finally {
-        clearTimeout(asyncTimeout);
-      }
-    });
-  }
-
-  /**
-   * Same as `sendCommand`, but for a specific session.
-   * @template {keyof LH.CrdpCommands} C
-   * @param {C} method
-   * @param {string} sessionId
+   * @param {string=} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
@@ -373,6 +344,17 @@ class Driver {
         clearTimeout(asyncTimeout);
       }
     });
+  }
+
+  /**
+   * Alias for 'sendCommandToSession(method, undefined, ...params)'
+   * @template {keyof LH.CrdpCommands} C
+   * @param {C} method
+   * @param {LH.CrdpCommands[C]['paramsType']} params
+   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
+   */
+  sendCommand(method, ...params) {
+    return this.sendCommandToSession(method, undefined, ...params);
   }
 
   /**
