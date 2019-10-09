@@ -52,7 +52,7 @@ class Connection {
    * Call protocol methods
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
-   * @param {string=} sessionId
+   * @param {string|undefined} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} paramArgs,
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */

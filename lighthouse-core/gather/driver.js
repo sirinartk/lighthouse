@@ -318,9 +318,10 @@ class Driver {
   /**
    * Call protocol methods, with a timeout.
    * To configure the timeout for the next call, use 'setNextProtocolTimeout'.
+   * If 'sessionId' is undefined, the message is sent to the main session.
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
-   * @param {string=} sessionId
+   * @param {string|undefined} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
@@ -362,7 +363,7 @@ class Driver {
    * @private
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
-   * @param {string=} sessionId
+   * @param {string|undefined} sessionId
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
