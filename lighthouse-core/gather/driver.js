@@ -234,14 +234,16 @@ class Driver {
    * user of that domain (e.g. two gatherers have enabled a domain, both need to
    * disable it for it to be disabled). Returns true otherwise.
    * @param {string} domain
+   * @param {string|undefined} sessionId
    * @param {boolean} enable
    * @return {boolean}
    * @private
    */
-  _shouldToggleDomain(domain, enable) {
-    const enabledCount = this._domainEnabledCounts.get(domain) || 0;
+  _shouldToggleDomain(domain, sessionId, enable) {
+    const key = domain + (sessionId || '');
+    const enabledCount = this._domainEnabledCounts.get(key) || 0;
     const newCount = enabledCount + (enable ? 1 : -1);
-    this._domainEnabledCounts.set(domain, Math.max(0, newCount));
+    this._domainEnabledCounts.set(key, Math.max(0, newCount));
 
     // Switching to enabled or disabled, respectively.
     if ((enable && newCount === 1) || (!enable && newCount === 0)) {
@@ -369,10 +371,9 @@ class Driver {
    */
   _innerSendCommand(method, sessionId, ...params) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
-    // TODO: store domain state for each session.
-    if (domainCommand && !sessionId) {
+    if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
-      if (!this._shouldToggleDomain(domainCommand[1], enable)) {
+      if (!this._shouldToggleDomain(domainCommand[1], sessionId, enable)) {
         return Promise.resolve();
       }
     }
