@@ -59,18 +59,18 @@ function createOptionItem(text, id, isChecked) {
 
 /**
  * Click event handler for Generate Report button.
- * @param {string} siteURL
+ * @param {string} url
  * @param {Settings} settings
  */
-function onGenerateReportButtonClick(siteURL, settings) {
-  const url = new URL(VIEWER_URL);
-  url.searchParams.append('psiurl', siteURL);
-  url.searchParams.append('strategy', settings.device);
+function onGenerateReportButtonClick(url, settings) {
+  const apiUrl = new URL(VIEWER_URL);
+  apiUrl.searchParams.append('psiurl', url);
+  apiUrl.searchParams.append('strategy', settings.device);
   for (const category of settings.selectedCategories) {
-    url.searchParams.append('category', category);
+    apiUrl.searchParams.append('category', category);
   }
-  url.searchParams.append('utm_source', 'lh-chrome-ext');
-  window.open(url.href);
+  apiUrl.searchParams.append('utm_source', 'lh-chrome-ext');
+  window.open(apiUrl.href);
 }
 
 /**
@@ -122,6 +122,9 @@ function persistSettings() {
   });
 }
 
+/**
+ * @return {Promise<URL>}
+ */
 function getSiteUrl() {
   return new Promise((resolve, reject) => {
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
@@ -132,7 +135,7 @@ function getSiteUrl() {
       const url = new URL(tabs[0].url);
       if (url.hostname === 'localhost') {
         reject(new Error('Use DevTools to audit pages on localhost.'));
-      } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
+      } else if (/^(chrome|chrome-extension):/.test(url.protocol)) {
         reject(new Error(`Cannot audit ${url.protocol}// pages.`));
       } else {
         resolve(url);
@@ -155,36 +158,38 @@ async function initPopup() {
   const errorMessageEl = find('.errormsg');
   const optionsFormEl = find('.options__form');
 
+  /** @type {URL} */
+  let siteUrl;
+  /** @type {Settings} */
+  let settings;
   try {
-    const siteUrl = await getSiteUrl();
-
-    // Generate checkboxes from saved settings.
-    ExtensionController.loadSettings().then(settings => {
-      generateOptionsList(settings);
-      const selectedDeviceEl = /** @type {HTMLInputElement} */ (
-        find(`.options__device input[value="${settings.device}"]`));
-      selectedDeviceEl.checked = true;
-    });
-
-    generateReportButton.addEventListener('click', () => {
-      ExtensionController.loadSettings().then(settings => {
-        onGenerateReportButtonClick(siteUrl, settings);
-      });
-    });
-
-    optionsEl.addEventListener('click', () => {
-      bodyEl.classList.toggle(optionsVisibileClass);
-    });
-
-    optionsFormEl.addEventListener('change', () => {
-      persistSettings();
-    });
+    siteUrl = await getSiteUrl();
+    settings = await ExtensionController.loadSettings();
   } catch (err) {
     generateReportButton.disabled = true;
     optionsEl.classList.add('disabled');
     psiDisclaimerEl.remove();
     errorMessageEl.textContent = err.message;
+    return;
   }
+
+  // Generate checkboxes from saved settings.
+  generateOptionsList(settings);
+  const selectedDeviceEl = /** @type {HTMLInputElement} */ (
+    find(`.options__device input[value="${settings.device}"]`));
+  selectedDeviceEl.checked = true;
+
+  generateReportButton.addEventListener('click', () => {
+    onGenerateReportButtonClick(siteUrl.href, settings);
+  });
+
+  optionsEl.addEventListener('click', () => {
+    bodyEl.classList.toggle(optionsVisibileClass);
+  });
+
+  optionsFormEl.addEventListener('change', () => {
+    persistSettings();
+  });
 }
 
 initPopup();
