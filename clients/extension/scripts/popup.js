@@ -14,9 +14,7 @@ const ExtensionController = (() => {
   return require('./extension-controller.js');
 })();
 
-// `update_url` only exists in production - it's a property that the Chrome web store injects.
-const DEV = !('update_url' in chrome.runtime.getManifest());
-const VIEWER_URL = DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io/lighthouse/viewer/';
+const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
 
 const optionsVisibileClass = 'show-options';
 
@@ -124,6 +122,25 @@ function persistSettings() {
   });
 }
 
+function getSiteUrl() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
+      if (tabs.length === 0 || !tabs[0].url) {
+        return;
+      }
+
+      const url = new URL(tabs[0].url);
+      if (url.hostname === 'localhost') {
+        reject(new Error('Use DevTools to audit pages on localhost.'));
+      } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
+        reject(new Error(`Cannot audit ${url.protocol}// pages.`));
+      } else {
+        resolve(url);
+      }
+    });
+  });
+}
+
 /**
  * Initializes the popup's state and UI elements.
  */
@@ -139,22 +156,7 @@ async function initPopup() {
   const optionsFormEl = find('.options__form');
 
   try {
-    const siteUrl = await new Promise((resolve, reject) => {
-      chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
-        if (tabs.length === 0 || !tabs[0].url) {
-          return;
-        }
-
-        const url = new URL(tabs[0].url);
-        if (url.hostname === 'localhost') {
-          reject('Use DevTools to audit pages on localhost.');
-        } else if (/(chrome|chrome-extension):/.test(url.protocol)) {
-          reject(`Cannot audit ${url.protocol}// pages.`);
-        } else {
-          resolve(url);
-        }
-      });
-    });
+    const siteUrl = await getSiteUrl();
 
     // Generate checkboxes from saved settings.
     ExtensionController.loadSettings().then(settings => {
@@ -181,7 +183,7 @@ async function initPopup() {
     generateReportButton.disabled = true;
     optionsEl.classList.add('disabled');
     psiDisclaimerEl.remove();
-    errorMessageEl.textContent = 'Use DevTools to audit pages on localhost.';
+    errorMessageEl.textContent = err.message;
   }
 }
 
