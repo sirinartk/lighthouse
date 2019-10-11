@@ -194,10 +194,10 @@ class PageDependencyGraph {
     function addDependencyOnFrame(cpuNode, frameId) {
       if (!frameId) return;
       const networkNode = networkNodeOutput.frameIdToNodeMap.get(frameId);
-      if (!networkNode ||
-          // Ignore all network nodes that started after this CPU task started
-          // A network request that started after could not possibly be required this task
-          networkNode.startTime >= cpuNode.startTime) return;
+      if (!networkNode) return;
+      // Ignore all network nodes that started after this CPU task started
+      // A network request that started after could not possibly be required this task
+      if (networkNode.startTime >= cpuNode.startTime) return;
       cpuNode.addDependency(networkNode);
     }
 
