@@ -7,15 +7,9 @@
 
 /** @typedef {import('./extension-controller.js').Settings} Settings */
 
-/** @type {import('./extension-controller.js')} */
-const ExtensionController = (() => {
-  // @ts-ignore: for popup-test.js
-  if (window.ControllerMock) return window.ControllerMock;
-  return require('./extension-controller.js');
-})();
+const ExtensionController = require('./extension-controller.js');
 
 const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
-
 const optionsVisibileClass = 'show-options';
 
 /**
@@ -96,18 +90,6 @@ function fillDevToolsShortcut() {
   el.textContent = isMac ? '⌘⌥I (Cmd+Opt+I)' : 'F12';
 }
 
-function logVersion() {
-  // @ts-ignore: Run when in extension context, but not in unit tests.
-  if (typeof window.ControllerMock !== 'undefined') return;
-
-  chrome.runtime.onInstalled.addListener(details => {
-    if (details.previousVersion) {
-      // eslint-disable-next-line no-console
-      console.log('previousVersion', details.previousVersion);
-    }
-  });
-}
-
 function persistSettings() {
   const optionsEl = find('.section--options');
   // Save settings when options page is closed.
@@ -148,7 +130,6 @@ function getSiteUrl() {
  * Initializes the popup's state and UI elements.
  */
 async function initPopup() {
-  logVersion();
   fillDevToolsShortcut();
 
   const bodyEl = find('body');
