@@ -84,6 +84,11 @@ body {
   padding: 6px 14px 6px 14px;
   border-radius: 13px;
   background-color: var(--color-blue);
+  transition: 0.1s all;
+}
+.button--generate:hover {
+  background-color: #042790;
+  border: 1px solid #0535C1;
 }
 
 .section {
