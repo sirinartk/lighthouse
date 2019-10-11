@@ -78,7 +78,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font-weight: 500;
   font-size: var(--font-size);
-  border: none;
+  border: 1px solid transparent;
   color: var(--color-bg);
   margin: 8px auto;
   padding: 6px 14px 6px 14px;
@@ -86,7 +86,7 @@ body {
   background-color: var(--color-blue);
   transition: 0.1s all;
 }
-.button--generate:hover {
+.button--generate:not(:disabled):hover {
   background-color: #042790;
   border: 1px solid #0535C1;
 }
