@@ -5,9 +5,7 @@
  */
 'use strict';
 
-/** @typedef {import('./extension-controller.js').Settings} Settings */
-
-const ExtensionController = require('./extension-controller.js');
+const SettingsController = require('./settings-controller.js');
 
 const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
 const optionsVisibileClass = 'show-options';
@@ -54,7 +52,7 @@ function createOptionItem(text, id, isChecked) {
 /**
  * Click event handler for Generate Report button.
  * @param {string} url
- * @param {Settings} settings
+ * @param {SettingsController.Settings} settings
  */
 function onGenerateReportButtonClick(url, settings) {
   const apiUrl = new URL(VIEWER_URL);
@@ -70,12 +68,12 @@ function onGenerateReportButtonClick(url, settings) {
 /**
  * Generates a document fragment containing a list of checkboxes and labels
  * for the categories.
- * @param {Settings} settings
+ * @param {SettingsController.Settings} settings
  */
 function generateOptionsList(settings) {
   const frag = document.createDocumentFragment();
 
-  ExtensionController.DEFAULT_CATEGORIES.forEach(category => {
+  SettingsController.DEFAULT_CATEGORIES.forEach(category => {
     const isChecked = settings.selectedCategories.includes(category.id);
     frag.appendChild(createOptionItem(category.title, category.id, isChecked));
   });
@@ -98,7 +96,7 @@ function persistSettings() {
   const selectedCategories = Array.from(checkboxes).map(input => input.value);
   const device = /** @type {HTMLInputElement} */ (find('input[name="device"]:checked')).value;
 
-  ExtensionController.saveSettings({
+  SettingsController.saveSettings({
     selectedCategories,
     device,
   });
@@ -141,11 +139,11 @@ async function initPopup() {
 
   /** @type {URL} */
   let siteUrl;
-  /** @type {Settings} */
+  /** @type {SettingsController.Settings} */
   let settings;
   try {
     siteUrl = await getSiteUrl();
-    settings = await ExtensionController.loadSettings();
+    settings = await SettingsController.loadSettings();
   } catch (err) {
     generateReportButton.disabled = true;
     optionsEl.classList.add('disabled');

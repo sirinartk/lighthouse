@@ -10,7 +10,7 @@
 const path = require('path');
 const puppeteer = require('../../../node_modules/puppeteer/index.js');
 const {DEFAULT_CATEGORIES, STORAGE_KEYS} =
-  require('../../extension/scripts/extension-controller.js');
+  require('../../extension/scripts/settings-controller.js');
 
 const lighthouseExtensionPath = path.resolve(__dirname, '../../../dist/extension');
 
