@@ -145,6 +145,9 @@ async function initPopup() {
     siteUrl = await getSiteUrl();
     settings = await SettingsController.loadSettings();
   } catch (err) {
+    // Disable everything. A navigation might allow for a working state,
+    // but it's very hard to keep an extension popup alive during a popup
+    // so we don't need to handle reacting to it.
     generateReportButton.disabled = true;
     optionsEl.classList.add('disabled');
     psiDisclaimerEl.remove();
