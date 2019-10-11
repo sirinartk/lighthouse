@@ -902,6 +902,6 @@ describe('Multi-target management', () => {
     await flushAllTimersAndMicrotasks();
 
     expect(connectionStub.sendCommand)
-      .toHaveBeenCalledWith('Runtime.runIfWaitingForDebugger', 'SW1');
+      .toHaveBeenNthCalledWith(1, 'Runtime.runIfWaitingForDebugger', 'SW1');
   });
 });
