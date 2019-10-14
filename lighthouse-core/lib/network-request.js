@@ -129,8 +129,8 @@ class NetworkRequest {
     this.frameId = '';
     /**
      * @type {string|undefined}
-     * Only set for child targets (OOPIFS). This is the sessionId of the protocol connection on
-     * which this request was discovered. Undefined means it came from the root.
+     * Only set for child targets (OOPIFs). This is the sessionId of the protocol connection on
+     * which this request was discovered. `undefined` means it came from the root.
      */
     this.sessionId = undefined;
     this.isLinkPreload = false;

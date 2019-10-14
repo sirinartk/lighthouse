@@ -313,7 +313,7 @@ class Driver {
       waitForDebuggerOnStart: true,
     });
 
-    // // We suspended the target when we auto-attached, so make sure it goes back to being normal.
+    // We suspended the target when we auto-attached, so make sure it goes back to being normal.
     await this.sendCommandToSession('Runtime.runIfWaitingForDebugger', event.sessionId);
   }
 
