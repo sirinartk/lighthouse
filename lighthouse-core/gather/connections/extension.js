@@ -19,6 +19,9 @@ class ExtensionConnection extends Connection {
 
     this._onEvent = this._onEvent.bind(this);
     this._onUnexpectedDetach = this._onUnexpectedDetach.bind(this);
+
+    // The extension won't work anymore, will be removed post-haste.
+    throw new Error('ExtensionConnection is defunct.');
   }
 
   /**
@@ -111,10 +114,11 @@ class ExtensionConnection extends Connection {
    * Call protocol methods.
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
+   * @param {string} _
    * @param {LH.CrdpCommands[C]['paramsType']} paramArgs,
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendCommand(method, ...paramArgs) {
+  sendCommand(method, _, ...paramArgs) {
     // Reify params since we need it as a property so can't just spread again.
     const params = paramArgs.length ? paramArgs[0] : undefined;
 
