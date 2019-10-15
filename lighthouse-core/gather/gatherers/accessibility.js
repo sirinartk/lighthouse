@@ -34,6 +34,7 @@ function runA11yChecks() {
     rules: {
       'tabindex': {enabled: true},
       'accesskeys': {enabled: true},
+      'duplicate-id': {enabled: false},
       'heading-order': {enabled: true},
       'table-fake-caption': {enabled: false},
       'td-has-header': {enabled: false},

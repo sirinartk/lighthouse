@@ -600,18 +600,6 @@
             "scoreDisplayMode": "numeric",
             "title": "Avoids an excessive DOM size"
         },
-        "duplicate-id": {
-            "description": "The value of an id attribute must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://web.dev/duplicate-id/).",
-            "details": {
-                "headings": [],
-                "items": [],
-                "type": "table"
-            },
-            "id": "duplicate-id",
-            "score": 1.0,
-            "scoreDisplayMode": "binary",
-            "title": "`[id]` attributes on the page are unique"
-        },
         "duplicate-id-active": {
             "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/3.3/duplicate-id-active).",
             "details": {
@@ -3409,11 +3397,6 @@
                     "weight": 3.0
                 },
                 {
-                    "group": "a11y-best-practices",
-                    "id": "duplicate-id",
-                    "weight": 1.0
-                },
-                {
                     "group": "a11y-navigation",
                     "id": "duplicate-id-active",
                     "weight": 3.0
@@ -4735,12 +4718,6 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:document-title",
-                "startTime": 0.0
-            },
-            {
-                "duration": 100.0,
-                "entryType": "measure",
-                "name": "lh:audit:duplicate-id",
                 "startTime": 0.0
             },
             {

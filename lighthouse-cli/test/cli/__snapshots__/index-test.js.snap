@@ -202,9 +202,6 @@ Object {
       "path": "accessibility/document-title",
     },
     Object {
-      "path": "accessibility/duplicate-id",
-    },
-    Object {
       "path": "accessibility/duplicate-id-active",
     },
     Object {
@@ -506,11 +503,6 @@ Object {
           "group": "a11y-names-labels",
           "id": "document-title",
           "weight": 3,
-        },
-        Object {
-          "group": "a11y-best-practices",
-          "id": "duplicate-id",
-          "weight": 1,
         },
         Object {
           "group": "a11y-navigation",

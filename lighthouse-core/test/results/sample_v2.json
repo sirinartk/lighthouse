@@ -1758,18 +1758,6 @@
         "items": []
       }
     },
-    "duplicate-id": {
-      "id": "duplicate-id",
-      "title": "`[id]` attributes on the page are unique",
-      "description": "The value of an id attribute must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://web.dev/duplicate-id/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
-    },
     "duplicate-id-active": {
       "id": "duplicate-id-active",
       "title": "`[id]` attributes on active, focusable elements are unique",
@@ -3780,11 +3768,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "duplicate-id",
-          "weight": 1,
-          "group": "a11y-best-practices"
-        },
-        {
           "id": "duplicate-id-active",
           "weight": 3,
           "group": "a11y-navigation"
@@ -4838,12 +4821,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:document-title",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:duplicate-id",
         "duration": 100,
         "entryType": "measure"
       },
@@ -5945,12 +5922,6 @@
       ],
       "lighthouse-core/audits/accessibility/document-title.js | description": [
         "audits[document-title].description"
-      ],
-      "lighthouse-core/audits/accessibility/duplicate-id.js | title": [
-        "audits[duplicate-id].title"
-      ],
-      "lighthouse-core/audits/accessibility/duplicate-id.js | description": [
-        "audits[duplicate-id].description"
       ],
       "lighthouse-core/audits/accessibility/duplicate-id-active.js | title": [
         "audits[duplicate-id-active].title"
