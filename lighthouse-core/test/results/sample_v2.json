@@ -2231,13 +2231,6 @@
       "score": null,
       "scoreDisplayMode": "manual"
     },
-    "heading-levels": {
-      "id": "heading-levels",
-      "title": "Headings don't skip levels",
-      "description": "Headings are used to create an outline for the page and heading levels are not skipped. [Learn more](https://web.dev/heading-levels/).",
-      "score": null,
-      "scoreDisplayMode": "manual"
-    },
     "interactive-element-affordance": {
       "id": "interactive-element-affordance",
       "title": "Interactive elements indicate their purpose and state",
@@ -3960,10 +3953,6 @@
           "weight": 0
         },
         {
-          "id": "heading-levels",
-          "weight": 0
-        },
-        {
           "id": "use-landmarks",
           "weight": 0
         }
@@ -5040,12 +5029,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:focusable-controls",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:heading-levels",
         "duration": 100,
         "entryType": "measure"
       },

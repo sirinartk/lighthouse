@@ -289,9 +289,6 @@ Object {
       "path": "accessibility/manual/focusable-controls",
     },
     Object {
-      "path": "accessibility/manual/heading-levels",
-    },
-    Object {
       "path": "accessibility/manual/interactive-element-affordance",
     },
     Object {
@@ -672,10 +669,6 @@ Object {
         },
         Object {
           "id": "offscreen-content-hidden",
-          "weight": 0,
-        },
-        Object {
-          "id": "heading-levels",
           "weight": 0,
         },
         Object {

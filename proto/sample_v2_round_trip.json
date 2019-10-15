@@ -916,13 +916,6 @@
             "scoreDisplayMode": "binary",
             "title": "Requests the geolocation permission on page load"
         },
-        "heading-levels": {
-            "description": "Headings are used to create an outline for the page and heading levels are not skipped. [Learn more](https://web.dev/heading-levels/).",
-            "id": "heading-levels",
-            "score": null,
-            "scoreDisplayMode": "manual",
-            "title": "Headings don't skip levels"
-        },
         "heading-order": {
             "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/3.3/heading-order).",
             "details": {
@@ -3589,10 +3582,6 @@
                     "weight": 0.0
                 },
                 {
-                    "id": "heading-levels",
-                    "weight": 0.0
-                },
-                {
                     "id": "use-landmarks",
                     "weight": 0.0
                 }
@@ -4937,12 +4926,6 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:focusable-controls",
-                "startTime": 0.0
-            },
-            {
-                "duration": 100.0,
-                "entryType": "measure",
-                "name": "lh:audit:heading-levels",
                 "startTime": 0.0
             },
             {
