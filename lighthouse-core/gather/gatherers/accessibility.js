@@ -40,6 +40,7 @@ function runA11yChecks() {
       'marquee': {enabled: false},
       'area-alt': {enabled: false},
       'aria-dpub-role-fallback': {enabled: false},
+      'html-xml-lang-mismatch': {enabled: false},
       'blink': {enabled: false},
       'server-side-image-map': {enabled: false},
     },

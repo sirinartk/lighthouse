@@ -245,15 +245,6 @@
   "lighthouse-core/audits/accessibility/html-lang-valid.js | title": {
     "message": "`<html>` element has a valid value for its `[lang]` attribute"
   },
-  "lighthouse-core/audits/accessibility/html-xml-lang-mismatch.js | description": {
-    "message": "Mismatched language declarations may result in a screen reader announcing the page's text incorrectly. [Learn more](https://dequeuniversity.com/rules/axe/3.3/html-xml-lang-mismatch)."
-  },
-  "lighthouse-core/audits/accessibility/html-xml-lang-mismatch.js | failureTitle": {
-    "message": "The `<html>` `[lang]` attribute does not match the `[xml:lang]` attribute"
-  },
-  "lighthouse-core/audits/accessibility/html-xml-lang-mismatch.js | title": {
-    "message": "The `<html>` `[lang]` attribute matches the `[xml:lang]` attribute"
-  },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
     "message": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more](https://web.dev/image-alt/)."
   },

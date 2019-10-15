@@ -226,9 +226,6 @@ Object {
       "path": "accessibility/html-lang-valid",
     },
     Object {
-      "path": "accessibility/html-xml-lang-mismatch",
-    },
-    Object {
       "path": "accessibility/image-alt",
     },
     Object {
@@ -549,11 +546,6 @@ Object {
           "group": "a11y-language",
           "id": "html-lang-valid",
           "weight": 3,
-        },
-        Object {
-          "group": "a11y-language",
-          "id": "html-xml-lang-mismatch",
-          "weight": 2,
         },
         Object {
           "group": "a11y-names-labels",

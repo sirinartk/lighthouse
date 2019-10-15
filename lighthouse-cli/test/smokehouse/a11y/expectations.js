@@ -394,10 +394,6 @@ const expectations = [
             ],
           },
         },
-        'html-xml-lang-mismatch': {
-          score: null,
-          scoreDisplayMode: 'notApplicable',
-        },
         'image-alt': {
           score: 0,
           details: {

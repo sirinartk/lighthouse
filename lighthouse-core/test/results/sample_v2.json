@@ -1870,18 +1870,6 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
-    "html-xml-lang-mismatch": {
-      "id": "html-xml-lang-mismatch",
-      "title": "The `<html>` `[lang]` attribute matches the `[xml:lang]` attribute",
-      "description": "Mismatched language declarations may result in a screen reader announcing the page's text incorrectly. [Learn more](https://dequeuniversity.com/rules/axe/3.3/html-xml-lang-mismatch).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
-    },
     "image-alt": {
       "id": "image-alt",
       "title": "Image elements do not have `[alt]` attributes",
@@ -3832,11 +3820,6 @@
           "group": "a11y-language"
         },
         {
-          "id": "html-xml-lang-mismatch",
-          "weight": 2,
-          "group": "a11y-language"
-        },
-        {
           "id": "image-alt",
           "weight": 10,
           "group": "a11y-names-labels"
@@ -3958,7 +3941,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.67
+      "score": 0.66
     },
     "best-practices": {
       "title": "Best Practices",
@@ -4903,12 +4886,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:html-lang-valid",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:html-xml-lang-mismatch",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6016,12 +5993,6 @@
       ],
       "lighthouse-core/audits/accessibility/html-lang-valid.js | description": [
         "audits[html-lang-valid].description"
-      ],
-      "lighthouse-core/audits/accessibility/html-xml-lang-mismatch.js | title": [
-        "audits[html-xml-lang-mismatch].title"
-      ],
-      "lighthouse-core/audits/accessibility/html-xml-lang-mismatch.js | description": [
-        "audits[html-xml-lang-mismatch].description"
       ],
       "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": [
         "audits[image-alt].title"
