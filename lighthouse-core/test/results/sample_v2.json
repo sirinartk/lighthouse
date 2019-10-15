@@ -1566,7 +1566,7 @@
     "aria-hidden-body": {
       "id": "aria-hidden-body",
       "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
-      "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn more](https://dequeuniversity.com/rules/axe/3.3/aria-hidden-body).",
+      "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn more](https://web.dev/aria-hidden-body/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1578,7 +1578,7 @@
     "aria-hidden-focus": {
       "id": "aria-hidden-focus",
       "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
-      "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn more](https://dequeuniversity.com/rules/axe/3.3/aria-hidden-focus).",
+      "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn more](https://web.dev/aria-hidden-focus/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1590,7 +1590,7 @@
     "aria-input-field-name": {
       "id": "aria-input-field-name",
       "title": "All ARIA input fields have accessible names",
-      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://dequeuniversity.com/rules/axe/3.3/aria-input-field-name).",
+      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-input-field-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1630,7 +1630,7 @@
     "aria-toggle-field-name": {
       "id": "aria-toggle-field-name",
       "title": "All ARIA toggle fields have accessible names",
-      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://dequeuniversity.com/rules/axe/3.3/aria-toggle-field-label).",
+      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-label/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1761,7 +1761,7 @@
     "duplicate-id-active": {
       "id": "duplicate-id-active",
       "title": "`[id]` attributes on active, focusable elements are unique",
-      "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/3.3/duplicate-id-active).",
+      "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn more](https://web.dev/duplicate-id-active/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1773,7 +1773,7 @@
     "duplicate-id-aria": {
       "id": "duplicate-id-aria",
       "title": "All ARIA IDs are unique",
-      "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/3.3/duplicate-id-aria).",
+      "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://web.dev/duplicate-id-aria/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1785,7 +1785,7 @@
     "form-field-multiple-labels": {
       "id": "form-field-multiple-labels",
       "title": "No Form fields have multiple labels",
-      "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://dequeuniversity.com/rules/axe/3.3/form-field-multiple-labels).",
+      "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://web.dev/form-field-multiple-labels/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -1804,7 +1804,7 @@
     "heading-order": {
       "id": "heading-order",
       "title": "Heading elements appear in a sequentially-descending order",
-      "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/3.3/heading-order).",
+      "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more](https://web.dev/heading-order/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
