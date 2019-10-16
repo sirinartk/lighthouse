@@ -39,10 +39,10 @@
     "message": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-input-field-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-input-field-name.js | failureTitle": {
-    "message": "Not all ARIA input fields have accessible names"
+    "message": "ARIA input fields do not have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-input-field-name.js | title": {
-    "message": "All ARIA input fields have accessible names"
+    "message": "ARIA input fields have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
     "message": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more](https://web.dev/aria-required-attr/)."
@@ -84,10 +84,10 @@
     "message": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-label/)."
   },
   "lighthouse-core/audits/accessibility/aria-toggle-field-name.js | failureTitle": {
-    "message": "Not all ARIA toggle fields have accessible names"
+    "message": "ARIA toggle fields do not have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-toggle-field-name.js | title": {
-    "message": "All ARIA toggle fields have accessible names"
+    "message": "ARIA toggle fields have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
     "message": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more](https://web.dev/aria-valid-attr-value/)."
@@ -186,10 +186,10 @@
     "message": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://web.dev/duplicate-id-aria/)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id-aria.js | failureTitle": {
-    "message": "ARIA IDs are not all unique"
+    "message": "ARIA IDs are not unique"
   },
   "lighthouse-core/audits/accessibility/duplicate-id-aria.js | title": {
-    "message": "All ARIA IDs are unique"
+    "message": "ARIA IDs are unique"
   },
   "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | description": {
     "message": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://web.dev/form-field-multiple-labels/)."
@@ -198,7 +198,7 @@
     "message": "Form fields have multiple labels"
   },
   "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | title": {
-    "message": "No Form fields have multiple labels"
+    "message": "No form fields have multiple labels"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
     "message": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more](https://web.dev/frame-title/)."

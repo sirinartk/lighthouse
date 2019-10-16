@@ -15,9 +15,9 @@ const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Title of an accesibility audit that checks if there are any duplicate ARIA IDs on the page. This title is descriptive of the successful state and is shown to users when no user action is required. */
-  title: 'All ARIA IDs are unique',
+  title: 'ARIA IDs are unique',
   /** Title of an accesibility audit that checks if there are any duplicate ARIA IDs on the page. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
-  failureTitle: 'ARIA IDs are not all unique',
+  failureTitle: 'ARIA IDs are not unique',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://web.dev/duplicate-id-aria/).',
 };

@@ -64,7 +64,7 @@
             "id": "aria-input-field-name",
             "score": 1.0,
             "scoreDisplayMode": "binary",
-            "title": "All ARIA input fields have accessible names"
+            "title": "ARIA input fields have accessible names"
         },
         "aria-required-attr": {
             "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more](https://web.dev/aria-required-attr/).",
@@ -104,7 +104,7 @@
             "id": "aria-toggle-field-name",
             "score": 1.0,
             "scoreDisplayMode": "binary",
-            "title": "All ARIA toggle fields have accessible names"
+            "title": "ARIA toggle fields have accessible names"
         },
         "aria-valid-attr": {
             "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more](https://web.dev/aria-valid-attr/).",
@@ -622,7 +622,7 @@
             "id": "duplicate-id-aria",
             "score": 1.0,
             "scoreDisplayMode": "binary",
-            "title": "All ARIA IDs are unique"
+            "title": "ARIA IDs are unique"
         },
         "efficient-animated-content": {
             "description": "Large GIFs are inefficient for delivering animated content. Consider using MPEG4/WebM videos for animations and PNG/WebP for static images instead of GIF to save network bytes. [Learn more](https://web.dev/efficient-animated-content)",
@@ -863,7 +863,7 @@
             "id": "form-field-multiple-labels",
             "score": 1.0,
             "scoreDisplayMode": "binary",
-            "title": "No Form fields have multiple labels"
+            "title": "No form fields have multiple labels"
         },
         "frame-title": {
             "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more](https://web.dev/frame-title/).",

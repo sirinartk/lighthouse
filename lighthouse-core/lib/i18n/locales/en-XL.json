@@ -39,10 +39,10 @@
     "message": "Ŵh́êń âń îńp̂út̂ f́îél̂d́ d̂óêśn̂'t́ ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é, ŝćr̂éêń r̂éâd́êŕŝ án̂ńôún̂ćê ít̂ ẃît́ĥ á ĝén̂ér̂íĉ ńâḿê, ḿâḱîńĝ ít̂ ún̂úŝáb̂ĺê f́ôŕ ûśêŕŝ ẃĥó r̂él̂ý ôń ŝćr̂éêń r̂éâd́êŕŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/aria-input-field-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-input-field-name.js | failureTitle": {
-    "message": "N̂ót̂ ál̂ĺ ÂŔÎÁ îńp̂út̂ f́îél̂d́ŝ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś"
+    "message": "ÂŔÎÁ îńp̂út̂ f́îél̂d́ŝ d́ô ńôt́ ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-input-field-name.js | title": {
-    "message": "Âĺl̂ ÁR̂ÍÂ ín̂ṕût́ f̂íêĺd̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
+    "message": "ÂŔÎÁ îńp̂út̂ f́îél̂d́ŝ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
     "message": "Ŝóm̂é ÂŔÎÁ r̂ól̂éŝ h́âv́ê ŕêq́ûír̂éd̂ át̂t́r̂íb̂út̂éŝ t́ĥát̂ d́êśĉŕîb́ê t́ĥé ŝt́ât́ê óf̂ t́ĥé êĺêḿêńt̂ t́ô śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-required-attr/)."
@@ -84,10 +84,10 @@
     "message": "Ŵh́êń â t́ôǵĝĺê f́îél̂d́ d̂óêśn̂'t́ ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é, ŝćr̂éêń r̂éâd́êŕŝ án̂ńôún̂ćê ít̂ ẃît́ĥ á ĝén̂ér̂íĉ ńâḿê, ḿâḱîńĝ ít̂ ún̂úŝáb̂ĺê f́ôŕ ûśêŕŝ ẃĥó r̂él̂ý ôń ŝćr̂éêń r̂éâd́êŕŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/aria-toggle-field-label/)."
   },
   "lighthouse-core/audits/accessibility/aria-toggle-field-name.js | failureTitle": {
-    "message": "N̂ót̂ ál̂ĺ ÂŔÎÁ t̂óĝǵl̂é f̂íêĺd̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
+    "message": "ÂŔÎÁ t̂óĝǵl̂é f̂íêĺd̂ś d̂ó n̂ót̂ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś"
   },
   "lighthouse-core/audits/accessibility/aria-toggle-field-name.js | title": {
-    "message": "Âĺl̂ ÁR̂ÍÂ t́ôǵĝĺê f́îél̂d́ŝ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś"
+    "message": "ÂŔÎÁ t̂óĝǵl̂é f̂íêĺd̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
     "message": "Âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ, ĺîḱê śĉŕêén̂ ŕêád̂ér̂ś, ĉán̂'t́ îńt̂ér̂ṕr̂ét̂ ÁR̂ÍÂ át̂t́r̂íb̂út̂éŝ ẃît́ĥ ín̂v́âĺîd́ v̂ál̂úêś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-valid-attr-value/)."
@@ -186,10 +186,10 @@
     "message": "T̂h́ê v́âĺûé ôf́ âń ÂŔÎÁ ÎD́ m̂úŝt́ b̂é ûńîq́ûé t̂ó p̂ŕêv́êńt̂ ót̂h́êŕ îńŝt́âńĉéŝ f́r̂óm̂ b́êín̂ǵ ôv́êŕl̂óôḱêd́ b̂ý âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/duplicate-id-aria/)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id-aria.js | failureTitle": {
-    "message": "ÂŔÎÁ ÎD́ŝ ár̂é n̂ót̂ ál̂ĺ ûńîq́ûé"
+    "message": "ÂŔÎÁ ÎD́ŝ ár̂é n̂ót̂ ún̂íq̂úê"
   },
   "lighthouse-core/audits/accessibility/duplicate-id-aria.js | title": {
-    "message": "Âĺl̂ ÁR̂ÍÂ ÍD̂ś âŕê ún̂íq̂úê"
+    "message": "ÂŔÎÁ ÎD́ŝ ár̂é ûńîq́ûé"
   },
   "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | description": {
     "message": "F̂ór̂ḿ f̂íêĺd̂ś ŵít̂h́ m̂úl̂t́îṕl̂é l̂áb̂él̂ś ĉán̂ b́ê ćôńf̂úŝín̂ǵl̂ý âńn̂óûńĉéd̂ b́ŷ áŝśîśt̂ív̂é t̂éĉh́n̂ól̂óĝíêś l̂ík̂é ŝćr̂éêń r̂éâd́êŕŝ ẃĥíĉh́ ûśê éît́ĥér̂ t́ĥé f̂ír̂śt̂, t́ĥé l̂áŝt́, ôŕ âĺl̂ óf̂ t́ĥé l̂áb̂él̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/form-field-multiple-labels/)."
@@ -198,7 +198,7 @@
     "message": "F̂ór̂ḿ f̂íêĺd̂ś ĥáv̂é m̂úl̂t́îṕl̂é l̂áb̂él̂ś"
   },
   "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | title": {
-    "message": "N̂ó F̂ór̂ḿ f̂íêĺd̂ś ĥáv̂é m̂úl̂t́îṕl̂é l̂áb̂él̂ś"
+    "message": "N̂ó f̂ór̂ḿ f̂íêĺd̂ś ĥáv̂é m̂úl̂t́îṕl̂é l̂áb̂él̂ś"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
     "message": "Ŝćr̂éêń r̂éâd́êŕ ûśêŕŝ ŕêĺŷ ón̂ f́r̂ám̂é t̂ít̂ĺêś t̂ó d̂éŝćr̂íb̂é t̂h́ê ćôńt̂én̂t́ŝ óf̂ f́r̂ám̂éŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/frame-title/)."
