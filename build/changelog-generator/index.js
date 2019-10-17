@@ -28,6 +28,18 @@ process.stderr.write(`
 
 `);
 
+const titlePrecedence = [
+  'New Audits',
+  'Core',
+  'Deps',
+  'Report',
+  'Clients',
+  'I18n',
+  'Docs',
+  'Tests',
+  'Misc',
+];
+
 const writerOpts = {
   mainTemplate,
   headerPartial,
@@ -73,21 +85,11 @@ const writerOpts = {
   groupBy: 'type',
   /** @param {{title: string}} a @param {{title: string}} b */
   commitGroupsSort: (a, b) => {
-    // put new audit on the top
-    if (a.title === 'New Audits') {
-      return -1;
-    }
-    if (b.title === 'New Audits') {
-      return 1;
-    }
+    const aIndex = titlePrecedence.indexOf(a.title);
+    const bIndex = titlePrecedence.indexOf(b.title);
 
-    // put misc on the bottom
-    if (a.title === 'Misc') {
-      return 1;
-    }
-    if (b.title === 'Misc') {
-      return -1;
-    }
+    if (aIndex > bIndex || aIndex === -1) return 1;
+    if (aIndex < bIndex || bIndex === -1) return -1;
 
     return a.title.localeCompare(b.title);
   },
