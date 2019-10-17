@@ -88,11 +88,13 @@ const writerOpts = {
     const aIndex = titlePrecedence.indexOf(a.title);
     const bIndex = titlePrecedence.indexOf(b.title);
 
-    if (aIndex === bIndex && aIndex !== -1) return 0;
-    if (aIndex > bIndex || aIndex === -1) return 1;
-    if (aIndex < bIndex || bIndex === -1) return -1;
-
-    return a.title.localeCompare(b.title);
+    if (aIndex === -1 && bIndex === -1) {
+      return a.title.localeCompare(b.title);
+    }
+    
+    if (aIndex === bIndex) return 0;
+    else if (aIndex > bIndex || aIndex === -1) return 1;
+    else return -1;
   },
   commitsSort: ['type', 'scope'],
 };
